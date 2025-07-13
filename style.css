@@ -1,4 +1,4 @@
-/* Reset ve genel ayarlar */
+/* Reset */
 *,
 *::before,
 *::after {
@@ -7,265 +7,364 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f7f9fc;
-  color: #212121;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f8;
+  color: #222;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   user-select: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.dark {
-  background-color: #1f1f1f;
-  color: #e0e0e0;
+  background-color: #121518;
+  color: #ddd;
 }
 
+/* Navbar */
 .navbar {
-  background-color: #3f51b5;
-  padding: 0 24px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  box-shadow: 0 3px 10px rgba(38, 97, 178, 0.6);
+  padding: 12px 24px;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
-  height: 52px;
-  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .navbar nav ul li {
-  margin-right: 20px;
-}
-
-.navbar nav ul li:last-child {
-  margin-right: 0;
+  margin: 0 16px;
 }
 
 .navbar nav ul li button.nav-btn {
-  background: none;
+  background: transparent;
   border: none;
   color: white;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 8px 18px;
+  border-radius: 12px;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  letter-spacing: 0.02em;
+  user-select: none;
 }
 
 .navbar nav ul li button.nav-btn:hover,
 .navbar nav ul li button.nav-btn.active {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #f9fafb;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
+/* Container */
 .app-container {
-  max-width: 480px;
-  width: 100%;
-  margin: 32px auto;
+  max-width: 520px;
+  margin: 40px auto 60px;
   background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  padding: 36px 40px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 24px;
+  padding: 40px 48px;
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.dark .app-container {
-  background-color: #282828;
-  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.05);
+  background-color: #1e1e28;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.9),
+    0 4px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* Başlıklar */
+/* Headings */
 h1,
 h2 {
-  margin: 0 0 28px 0;
+  margin-bottom: 32px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #1e293b;
+}
+
+body.dark h1,
+body.dark h2 {
+  color: #d1d5db;
+}
+
+/* Inputs */
+input[type='text'],
+input[type='date'],
+#usernameInput,
+#profileUsername {
+  width: 100%;
+  padding: 18px 22px;
+  font-size: 1.1rem;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  background-color: #f8fafc;
+  color: #0f172a;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+  margin-bottom: 28px;
   font-weight: 600;
   letter-spacing: 0.03em;
-  text-align: center;
+  user-select: text;
 }
 
-/* Giriş bölümü */
-.auth-section input,
-#profileSection input {
-  width: 100%;
-  padding: 16px 20px;
-  font-size: 1.1rem;
-  border: 2px solid #d1d9e6;
-  border-radius: 12px;
-  color: #212121;
-  margin-bottom: 24px;
-  transition: border-color 0.3s ease;
+input[type='text']::placeholder,
+input[type='date']::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
 }
 
-.auth-section input::placeholder,
-#profileSection input::placeholder {
-  color: #a1a8b3;
-}
-
-.auth-section input:focus,
-#profileSection input:focus {
+input[type='text']:focus,
+input[type='date']:focus,
+#usernameInput:focus,
+#profileUsername:focus {
   outline: none;
-  border-color: #3f51b5;
-  box-shadow: 0 0 6px rgba(63, 81, 181, 0.4);
+  border-color: #3b82f6;
+  background-color: #e0e7ff;
+  color: #1e40af;
+  box-shadow: 0 0 8px #3b82f6;
 }
 
-/* Butonlar */
-.auth-section button,
-#profileSection button,
-#taskForm button {
-  width: 100%;
-  padding: 16px 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  background-color: #3f51b5;
+/* Buttons */
+button,
+button.nav-btn,
+#startBtn,
+#saveProfileBtn,
+#logoutBtn,
+#taskForm button,
+.header-actions button {
+  font-weight: 700;
+  font-size: 1.15rem;
+  background-color: #3b82f6;
   color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 14px 32px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   user-select: none;
-  margin-bottom: 16px;
+  transition:
+    background-color 0.35s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
-.auth-section button:hover,
-.auth-section button:focus-visible,
-#profileSection button:hover,
-#profileSection button:focus-visible,
+button:hover,
+button:focus-visible,
+button.nav-btn:hover,
+button.nav-btn:focus-visible,
+#startBtn:hover,
+#startBtn:focus-visible,
+#saveProfileBtn:hover,
+#saveProfileBtn:focus-visible,
+#logoutBtn:hover,
+#logoutBtn:focus-visible,
 #taskForm button:hover,
-#taskForm button:focus-visible {
-  background-color: #303f9f;
+#taskForm button:focus-visible,
+.header-actions button:hover,
+.header-actions button:focus-visible {
+  background-color: #2563eb;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.7);
+  transform: translateY(-2px);
+  outline: none;
 }
 
-/* To-Do Bölümü */
-.todo-section {
-  display: flex;
-  flex-direction: column;
+button:active,
+button.nav-btn:active,
+#startBtn:active,
+#saveProfileBtn:active,
+#logoutBtn:active,
+#taskForm button:active,
+.header-actions button:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
+/* Todo Header */
 .todo-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 36px;
 }
 
 .todo-header h2 {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  color: #1e293b;
+  font-weight: 800;
 }
 
+body.dark .todo-header h2 {
+  color: #e0e0e0;
+}
+
+/* Header actions buttons */
 .header-actions button {
-  background: none;
-  border: none;
-  font-size: 1.3rem;
-  cursor: pointer;
-  margin-left: 16px;
-  color: #3f51b5;
-  transition: color 0.3s ease;
-  user-select: none;
+  font-size: 1.6rem;
+  background: transparent;
+  color: #3b82f6;
+  padding: 6px 12px;
+  border-radius: 12px;
+  box-shadow: none;
+  transition: color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .header-actions button:hover,
 .header-actions button:focus-visible {
-  color: #303f9f;
+  color: #2563eb;
+  box-shadow: 0 0 8px #2563eb;
 }
 
-/* Görev ekleme formu */
+/* Task form */
 #taskForm {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 20px;
   flex-wrap: wrap;
+  margin-bottom: 36px;
   justify-content: center;
 }
 
 #taskForm input[type='text'],
 #taskForm input[type='date'] {
   flex: 1 1 60%;
-  padding: 14px 18px;
-  font-size: 1rem;
-  border-radius: 12px;
-  border: 2px solid #d1d9e6;
-  color: #212121;
-  transition: border-color 0.3s ease;
+  min-width: 220px;
+  font-weight: 600;
 }
 
-#taskForm input::placeholder {
-  color: #a1a8b3;
+#taskForm button {
+  flex: 1 1 30%;
+  min-width: 120px;
+  letter-spacing: 0.04em;
 }
 
-#taskForm input:focus {
-  outline: none;
-  border-color: #3f51b5;
-  box-shadow: 0 0 6px rgba(63, 81, 181, 0.4);
-}
-
-/* Görev listesi */
+/* Task list */
 #taskList {
   list-style: none;
-  padding: 0;
   margin: 0;
-  max-height: 360px;
+  padding: 0;
+  max-height: 400px;
   overflow-y: auto;
   user-select: none;
+  border-radius: 16px;
+  box-shadow: inset 0 0 12px #dbeafe;
+  background-color: #f0f9ff;
+  transition: background-color 0.4s ease;
+}
+
+body.dark #taskList {
+  background-color: #1e293b;
+  box-shadow: inset 0 0 12px #3b82f6;
 }
 
 #taskList li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #e8eaf6;
-  padding: 14px 18px;
-  border-radius: 12px;
-  margin-bottom: 14px;
-  font-weight: 500;
-  font-size: 1rem;
-  color: #212121;
-  transition: background-color 0.3s ease;
+  padding: 16px 24px;
+  margin: 10px 12px;
+  background: white;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #1e293b;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+  box-shadow:
+    0 4px 6px rgba(59, 130, 246, 0.15);
+}
+
+body.dark #taskList li {
+  background: #2563eb;
+  color: white;
+  box-shadow:
+    0 6px 12px rgba(21, 101, 192, 0.9);
 }
 
 #taskList li:hover,
 #taskList li:focus-within {
-  background-color: #c5cae9;
+  background-color: #60a5fa;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 16px rgba(59, 130, 246, 0.4);
 }
 
 .task-text {
-  word-break: break-word;
-  max-width: 75%;
-  cursor: pointer;
+  flex-grow: 1;
+  user-select: text;
+  margin-right: 12px;
+  max-width: 70%;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
-/* Tamamlanmış görevler için */
 .task-completed {
   text-decoration: line-through;
-  color: #999;
-  opacity: 0.7;
+  opacity: 0.6;
+  color: #555 !important;
 }
 
 .task-date {
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: #5c6bc0;
-  margin-left: 12px;
+  font-size: 0.9rem;
+  color: #2563eb;
+  margin-right: 12px;
   white-space: nowrap;
-  cursor: pointer;
+  font-weight: 700;
+  user-select: none;
+  flex-shrink: 0;
 }
 
-/* Gizleme */
+body.dark .task-date {
+  color: #93c5fd;
+}
+
+/* Delete button */
+.delete-btn {
+  background-color: #ef4444;
+  border: none;
+  color: white;
+  font-weight: 700;
+  border-radius: 14px;
+  cursor: pointer;
+  padding: 8px 18px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover,
+.delete-btn:focus-visible {
+  background-color: #b91c1c;
+}
+
+/* Hidden */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   .app-container {
     padding: 28px 24px;
+    margin: 24px 12px 48px;
   }
 
   #taskForm {
@@ -276,15 +375,16 @@ h2 {
   #taskForm input[type='date'],
   #taskForm button {
     flex: 1 1 100%;
+    min-width: auto;
   }
 
   #taskList li {
     flex-direction: column;
     align-items: flex-start;
+    padding: 16px 18px;
   }
 
   .task-date {
-    margin-left: 0;
-    margin-top: 8px;
+    margin: 8px 0 0 0;
   }
 }
