@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Görev Listem</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Görev Uygulaması</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="login-screen" id="loginScreen">
-    <h1>Görev Listem</h1>
-    <input type="text" id="loginName" placeholder="Kullanıcı adınız" />
+  <div id="login-screen" class="screen active">
+    <h1>✨ Görev Listem</h1>
+    <input type="text" id="username" placeholder="Adınızı girin" />
     <button onclick="login()">Giriş Yap</button>
   </div>
 
-  <div class="app hidden" id="app">
+  <div id="app-screen" class="screen">
     <header>
-      <h2 id="welcomeMsg"></h2>
+      <h2 id="welcome"></h2>
       <nav>
         <button onclick="showSection('home')">🏠 Ana Sayfa</button>
         <button onclick="showSection('tasks')">📋 Görevler</button>
         <button onclick="showSection('profile')">👤 Profil</button>
+        <button onclick="logout()">🚪 Çıkış</button>
       </nav>
     </header>
 
     <main>
-      <section id="home" class="section">Hoşgeldin!</section>
+      <section id="home" class="section active">
+        <h3>Hoş geldin! Bugün harika şeyler yapabilirsin 💪</h3>
+      </section>
 
-      <section id="tasks" class="section hidden">
-        <h3>Görevlerini Listele</h3>
+      <section id="tasks" class="section">
+        <h3>Görevlerini Planla</h3>
         <select id="taskCategory">
           <option>🏠 Ev</option>
           <option>🛒 Alışveriş</option>
@@ -36,23 +39,23 @@
           <option>🎓 Eğitim</option>
           <option>📅 Diğer</option>
         </select>
-        <input type="text" id="taskInput" placeholder="Görev girin" />
+        <input type="text" id="taskInput" placeholder="Yeni görev girin" />
         <button onclick="addTask()">Ekle</button>
         <ul id="taskList"></ul>
       </section>
 
-      <section id="profile" class="section hidden">
-        <h3>Profil Ayarları</h3>
-        <label>Adınız:</label>
+      <section id="profile" class="section">
+        <h3>Profil</h3>
+        <label>Kullanıcı Adı:</label>
         <input type="text" id="profileName" />
         <label>Emoji Avatar:</label>
-        <select id="emojiSelect">
+        <select id="avatarSelect">
           <option>😊</option>
-          <option>🌸</option>
           <option>🐱</option>
-          <option>🎀</option>
+          <option>🌸</option>
           <option>🦄</option>
           <option>💻</option>
+          <option>🎀</option>
         </select>
         <button onclick="saveProfile()">Kaydet</button>
       </section>
