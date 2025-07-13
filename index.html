@@ -3,242 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Profesyonel To-Do List</title>
+  <title>To-Do List - Kullanışlı Tasarım</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Üst Menü -->
-  <header class="navbar">
-    <nav>
-      <ul>
-        <li><button class="nav-btn active" data-section="home">Ana Sayfa</button></li>
-        <li><button class="nav-btn" data-section="tasks">Görevler</button></li>
-        <li><button class="nav-btn" data-section="profile">Profil</button></li>
-      </ul>
+
+  <header class="header">
+    <h1>To-Do List</h1>
+    <nav class="nav-menu">
+      <button class="nav-btn active" data-section="home">Ana Sayfa</button>
+      <button class="nav-btn" data-section="tasks">Görevler</button>
+      <button class="nav-btn" data-section="profile">Profil</button>
     </nav>
   </header>
 
-  <!-- Ana içerik alanı -->
-  <main class="app-container">
-    <!-- Ana Sayfa -->
-    <section id="home" class="section">
-      <h1>Hoşgeldin!</h1>
-      <p>Burada kendi yapılacaklar listeni yönetebilir, profil oluşturabilirsin.</p>
-      <p>Menüden Görevler ve Profil kısımlarına geçiş yapabilirsin.</p>
+  <main class="main-content">
+    <section id="home" class="section active">
+      <h2>Hoşgeldin!</h2>
+      <p>Burada görevlerini yönetebilir ve profilini oluşturabilirsin.</p>
     </section>
 
-    <!-- Görevler -->
-    <section id="tasks" class="section hidden">
-      <div class="todo-header">
-        <h2>Görevlerin</h2>
-        <div class="header-actions">
-          <button id="toggleThemeBtn" title="Temayı değiştir">🌗</button>
-          <button id="logoutBtn" title="Çıkış yap">Çıkış</button>
-        </div>
-      </div>
-
+    <section id="tasks" class="section">
+      <h2>Görevler</h2>
       <form id="taskForm">
-        <input
-          type="text"
-          id="taskInput"
-          placeholder="Yeni görev girin..."
-          autocomplete="off"
-          required
-        />
+        <input type="text" id="taskInput" placeholder="Yeni görev ekle..." required />
         <input type="date" id="dueDateInput" />
         <button type="submit">Ekle</button>
       </form>
-
-      <ul id="taskList" aria-live="polite" aria-label="Görev Listesi"></ul>
+      <ul id="taskList" aria-live="polite"></ul>
     </section>
 
-    <!-- Profil -->
-    <section id="profile" class="section hidden">
-      <h2>Profil Ayarları</h2>
-      <label for="profileUsername">Kullanıcı Adı</label>
-      <input
-        type="text"
-        id="profileUsername"
-        placeholder="Kullanıcı adınızı girin"
-        autocomplete="off"
-        required
-      />
+    <section id="profile" class="section">
+      <h2>Profil</h2>
+      <label for="usernameInput">Kullanıcı Adı:</label>
+      <input type="text" id="usernameInput" placeholder="Kullanıcı adınızı girin" />
       <button id="saveProfileBtn">Kaydet</button>
     </section>
   </main>
 
-  <script>
-    // Menü butonları ve bölümler
-    const navButtons = document.querySelectorAll(".nav-btn");
-    const sections = document.querySelectorAll(".section");
-
-    navButtons.forEach((btn) =>
-      btn.addEventListener("click", () => {
-        navButtons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        const target = btn.dataset.section;
-        sections.forEach((sec) => {
-          sec.classList.toggle("hidden", sec.id !== target);
-        });
-      })
-    );
-
-    // Temayı değiştir (Koyu - Açık)
-    const toggleThemeBtn = document.getElementById("toggleThemeBtn");
-    toggleThemeBtn?.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-    });
-
-    // Basit kullanıcı ve görev yönetimi
-    let currentUser = localStorage.getItem("todo_user") || "";
-    if (!currentUser) {
-      currentUser = prompt("Lütfen kullanıcı adınızı girin") || "Misafir";
-      localStorage.setItem("todo_user", currentUser);
-    }
-
-    const profileUsernameInput = document.getElementById("profileUsername");
-    const saveProfileBtn = document.getElementById("saveProfileBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const taskForm = document.getElementById("taskForm");
-    const taskInput = document.getElementById("taskInput");
-    const dueDateInput = document.getElementById("dueDateInput");
-    const taskList = document.getElementById("taskList");
-
-    // Profil kullanıcı adını yükle
-    profileUsernameInput.value = currentUser;
-
-    // Görevleri yükle
-    function loadTasks() {
-      const tasks = JSON.parse(localStorage.getItem("todo_tasks")) || [];
-      taskList.innerHTML = "";
-
-      const userTasks = tasks.filter((t) => t.user === currentUser);
-      if (userTasks.length === 0) {
-        const noTask = document.createElement("li");
-        noTask.textContent = "Görev eklenmedi.";
-        noTask.style.fontStyle = "italic";
-        noTask.style.color = "#777";
-        taskList.appendChild(noTask);
-        return;
-      }
-
-      userTasks.forEach((task) => {
-        const li = document.createElement("li");
-
-        const textSpan = document.createElement("span");
-        textSpan.classList.add("task-text");
-        textSpan.textContent = task.text;
-        if (task.completed) textSpan.classList.add("task-completed");
-
-        // Tamamlandı toggle
-        textSpan.addEventListener("click", () => toggleComplete(task.id));
-
-        li.appendChild(textSpan);
-
-        if (task.dueDate) {
-          const dateSpan = document.createElement("span");
-          dateSpan.classList.add("task-date");
-          dateSpan.textContent = formatDate(task.dueDate);
-
-          // Tarih tıklayınca da tamamlandı toggle
-          dateSpan.addEventListener("click", () => toggleComplete(task.id));
-
-          li.appendChild(dateSpan);
-        }
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.classList.add("delete-btn");
-        deleteBtn.textContent = "Sil";
-        deleteBtn.title = "Görevi sil";
-        deleteBtn.addEventListener("click", () => deleteTask(task.id));
-
-        li.appendChild(deleteBtn);
-
-        taskList.appendChild(li);
-      });
-    }
-
-    // Tarih formatlama (gg.aa.yyyy)
-    function formatDate(dateStr) {
-      const [year, month, day] = dateStr.split("-");
-      return `${day}.${month}.${year}`;
-    }
-
-    // Görev tamamlandı toggle
-    function toggleComplete(id) {
-      let tasks = JSON.parse(localStorage.getItem("todo_tasks")) || [];
-      tasks = tasks.map((task) => {
-        if (task.id === id) {
-          task.completed = !task.completed;
-        }
-        return task;
-      });
-      localStorage.setItem("todo_tasks", JSON.stringify(tasks));
-      loadTasks();
-    }
-
-    // Görev sil
-    function deleteTask(id) {
-      let tasks = JSON.parse(localStorage.getItem("todo_tasks")) || [];
-      tasks = tasks.filter((task) => task.id !== id);
-      localStorage.setItem("todo_tasks", JSON.stringify(tasks));
-      loadTasks();
-    }
-
-    // Yeni görev ekle
-    taskForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const text = taskInput.value.trim();
-      if (!text) return alert("Görev boş olamaz!");
-      const dueDate = dueDateInput.value;
-
-      const tasks = JSON.parse(localStorage.getItem("todo_tasks")) || [];
-      const newTask = {
-        id: Date.now().toString(),
-        text,
-        dueDate,
-        completed: false,
-        user: currentUser,
-      };
-      tasks.push(newTask);
-      localStorage.setItem("todo_tasks", JSON.stringify(tasks));
-      taskInput.value = "";
-      dueDateInput.value = "";
-      loadTasks();
-    });
-
-    // Profil kaydet
-    saveProfileBtn.addEventListener("click", () => {
-      const newName = profileUsernameInput.value.trim();
-      if (!newName) return alert("Kullanıcı adı boş olamaz!");
-      changeUsername(newName);
-      alert("Profil güncellendi!");
-    });
-
-    // Kullanıcı adını değiştir
-    function changeUsername(newName) {
-      const tasks = JSON.parse(localStorage.getItem("todo_tasks")) || [];
-      tasks.forEach((task) => {
-        if (task.user === currentUser) {
-          task.user = newName;
-        }
-      });
-      localStorage.setItem("todo_tasks", JSON.stringify(tasks));
-      currentUser = newName;
-      localStorage.setItem("todo_user", currentUser);
-      profileUsernameInput.value = currentUser;
-      loadTasks();
-    }
-
-    // Çıkış yap
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("todo_user");
-      location.reload();
-    });
-
-    // Başlangıçta görevleri yükle
-    loadTasks();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
