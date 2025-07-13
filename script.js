@@ -76,6 +76,7 @@ taskForm.addEventListener('submit', (e) => {
     text,
     dueDate,
     id: Date.now(),
+    completed: false,
   });
   localStorage.setItem('todo_tasks', JSON.stringify(tasks));
 
@@ -107,6 +108,10 @@ function loadTasks() {
     const textSpan = document.createElement('span');
     textSpan.classList.add('task-text');
     textSpan.textContent = task.text;
+    if (task.completed) textSpan.classList.add('task-completed');
+
+    // Tamamlandı toggle
+    textSpan.addEventListener('click', () => toggleComplete(task.id));
 
     li.appendChild(textSpan);
 
@@ -114,6 +119,10 @@ function loadTasks() {
       const dateSpan = document.createElement('span');
       dateSpan.classList.add('task-date');
       dateSpan.textContent = formatDate(task.dueDate);
+
+      // Tarih tıklayınca da tamamlandı toggle
+      dateSpan.addEventListener('click', () => toggleComplete(task.id));
+
       li.appendChild(dateSpan);
     }
 
@@ -133,6 +142,19 @@ function loadTasks() {
 function formatDate(dateStr) {
   const [year, month, day] = dateStr.split('-');
   return `${day}.${month}.${year}`;
+}
+
+// Görev tamamlandı toggle
+function toggleComplete(id) {
+  let tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
+  tasks = tasks.map((task) => {
+    if (task.id === id) {
+      task.completed = !task.completed;
+    }
+    return task;
+  });
+  localStorage.setItem('todo_tasks', JSON.stringify(tasks));
+  loadTasks();
 }
 
 // Görev silme
