@@ -1,5 +1,9 @@
+// Elementler
 const authSection = document.getElementById('authSection');
+const homeSection = document.getElementById('homeSection');
 const todoSection = document.getElementById('todoSection');
+const profileSection = document.getElementById('profileSection');
+
 const usernameInput = document.getElementById('usernameInput');
 const welcomeText = document.getElementById('welcomeText');
 const taskForm = document.getElementById('taskForm');
@@ -7,26 +11,50 @@ const taskInput = document.getElementById('taskInput');
 const dueDateInput = document.getElementById('dueDateInput');
 const taskList = document.getElementById('taskList');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+const profileUsernameInput = document.getElementById('profileUsername');
+const saveProfileBtn = document.getElementById('saveProfileBtn');
 const logoutBtn = document.getElementById('logoutBtn');
+
+const navButtons = document.querySelectorAll('.nav-btn');
 
 let currentUser = null;
 
+// Sayfa yüklendiğinde
 window.addEventListener('DOMContentLoaded', () => {
-  // Tema kontrolü
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
   }
 
-  // Kullanıcı var mı?
   const storedUser = localStorage.getItem('todo_user');
   if (storedUser) {
     currentUser = storedUser;
-    showTodoSection();
-    loadTasks();
+    showApp();
+  } else {
+    showSection('authSection');
   }
 });
 
-// Profil oluşturma
+// Menü butonları event
+navButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    if (!currentUser) {
+      alert('Önce giriş yapmalısınız!');
+      showSection('authSection');
+      return;
+    }
+    const target = btn.getAttribute('data-target');
+    showSection(target);
+
+    navButtons.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    if(target === 'todoSection') loadTasks();
+    if(target === 'profileSection') loadProfile();
+  });
+});
+
+// Giriş yap
 document.getElementById('startBtn').addEventListener('click', () => {
   const name = usernameInput.value.trim();
   if (!name) {
@@ -35,23 +63,45 @@ document.getElementById('startBtn').addEventListener('click', () => {
   }
   currentUser = name;
   localStorage.setItem('todo_user', currentUser);
-  showTodoSection();
-  loadTasks();
+  showApp();
 });
 
-function showTodoSection() {
+// Uygulamayı göster
+function showApp() {
   authSection.classList.add('hidden');
-  todoSection.classList.remove('hidden');
+  showSection('homeSection');
+  updateWelcomeText();
+  setActiveNav('homeSection');
+}
+
+// Bölüm gösterme fonksiyonu
+function showSection(id) {
+  [authSection, homeSection, todoSection, profileSection].forEach((sec) => {
+    if (sec.id === id) {
+      sec.classList.remove('hidden');
+    } else {
+      sec.classList.add('hidden');
+    }
+  });
+}
+
+// Nav buton aktiflik ayarı
+function setActiveNav(id) {
+  navButtons.forEach((btn) => {
+    if (btn.getAttribute('data-target') === id) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+// Welcome text güncelle
+function updateWelcomeText() {
   welcomeText.textContent = `Hoşgeldiniz, ${currentUser}`;
 }
 
-// Çıkış
-logoutBtn.addEventListener('click', () => {
-  localStorage.removeItem('todo_user');
-  location.reload();
-});
-
-// Tema değiştirme
+// Tema değiştir
 themeToggleBtn.addEventListener('click', () => {
   document.body.classList.toggle('dark');
   if (document.body.classList.contains('dark')) {
@@ -61,7 +111,7 @@ themeToggleBtn.addEventListener('click', () => {
   }
 });
 
-// Görev ekleme
+// Görev ekle
 taskForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -84,9 +134,11 @@ taskForm.addEventListener('submit', (e) => {
   dueDateInput.value = '';
 
   loadTasks();
+  showSection('todoSection');
+  setActiveNav('todoSection');
 });
 
-// Görevleri yükleme
+// Görevleri yükle
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
   taskList.innerHTML = '';
@@ -157,10 +209,48 @@ function toggleComplete(id) {
   loadTasks();
 }
 
-// Görev silme
+// Görev sil
 function deleteTask(id) {
   let tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
   tasks = tasks.filter((task) => task.id !== id);
   localStorage.setItem('todo_tasks', JSON.stringify(tasks));
   loadTasks();
 }
+
+// Profil yükle
+function loadProfile() {
+  profileUsernameInput.value = currentUser;
+}
+
+// Profil kaydet
+saveProfileBtn.addEventListener('click', () => {
+  const newName = profileUsernameInput.value.trim();
+  if (!newName) {
+    alert('Kullanıcı adı boş olamaz!');
+    return;
+  }
+  // Kullanıcı adını değiştir ve kaydet
+  changeUsername(newName);
+  alert('Profil güncellendi!');
+});
+
+// Kullanıcı adı değiştir
+function changeUsername(newName) {
+  const tasks = JSON.parse(localStorage.getItem('todo_tasks')) || [];
+  // Kullanıcının tüm görevlerindeki user alanını güncelle
+  tasks.forEach((task) => {
+    if (task.user === currentUser) {
+      task.user = newName;
+    }
+  });
+  localStorage.setItem('todo_tasks', JSON.stringify(tasks));
+  currentUser = newName;
+  localStorage.setItem('todo_user', currentUser);
+  updateWelcomeText();
+}
+
+// Çıkış yap
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('todo_user');
+  location.reload();
+});
