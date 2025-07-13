@@ -2,95 +2,91 @@
   --primary: #f48fb1;
   --dark: #880e4f;
   --light: #fff0f6;
-  --text: #4a4a4a;
-  --radius: 16px;
+  --radius: 14px;
 }
 
 body {
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  font-family: 'Inter', sans-serif;
   background-color: var(--light);
-  color: var(--text);
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding: 20px;
 }
 
-.wrapper {
-  background: white;
-  padding: 40px;
-  border-radius: var(--radius);
-  box-shadow: 0 12px 30px rgba(244, 143, 177, 0.4);
+.screen {
+  display: none;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
-h1, h2 {
+.screen.active {
+  display: block;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header h2 {
   color: var(--dark);
-  text-align: center;
 }
 
-input[type="text"],
-input[type="date"],
-select {
+nav {
+  margin-top: 20px;
+}
+
+nav button {
+  margin: 5px;
+  padding: 10px 16px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+input, select {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border: 2px solid var(--primary);
   border-radius: var(--radius);
-  font-size: 1rem;
-  outline: none;
+  border: 2px solid var(--primary);
 }
 
 button {
+  padding: 12px;
+  border-radius: var(--radius);
   background-color: var(--primary);
   color: white;
-  padding: 12px 20px;
   border: none;
-  border-radius: var(--radius);
-  font-weight: bold;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
 button:hover {
   background-color: var(--dark);
 }
 
-.auth-buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.todo-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.icon {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.todo-input {
-  margin-top: 20px;
-}
-
-#taskList {
+ul {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
 }
 
-#taskList li {
+ul li {
   background-color: var(--light);
-  margin-bottom: 10px;
   padding: 10px;
-  border-left: 5px solid var(--primary);
+  margin-top: 10px;
+  border-left: 4px solid var(--primary);
   border-radius: var(--radius);
   display: flex;
   justify-content: space-between;
@@ -98,8 +94,8 @@ button:hover {
 }
 
 footer {
-  text-align: center;
   margin-top: 30px;
-  font-size: 0.9rem;
-  color: #777;
+  text-align: center;
+  font-size: 0.9em;
+  color: #888;
 }
