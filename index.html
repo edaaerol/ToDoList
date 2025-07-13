@@ -1,45 +1,67 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>To-Do List - Kullanışlı Tasarım</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Görev Listem</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="login-screen" id="loginScreen">
+    <h1>Görev Listem</h1>
+    <input type="text" id="loginName" placeholder="Kullanıcı adınız" />
+    <button onclick="login()">Giriş Yap</button>
+  </div>
 
-  <header class="header">
-    <h1>To-Do List</h1>
-    <nav class="nav-menu">
-      <button class="nav-btn active" data-section="home">Ana Sayfa</button>
-      <button class="nav-btn" data-section="tasks">Görevler</button>
-      <button class="nav-btn" data-section="profile">Profil</button>
-    </nav>
-  </header>
+  <div class="app hidden" id="app">
+    <header>
+      <h2 id="welcomeMsg"></h2>
+      <nav>
+        <button onclick="showSection('home')">🏠 Ana Sayfa</button>
+        <button onclick="showSection('tasks')">📋 Görevler</button>
+        <button onclick="showSection('profile')">👤 Profil</button>
+      </nav>
+    </header>
 
-  <main class="main-content">
-    <section id="home" class="section active">
-      <h2>Hoşgeldin!</h2>
-      <p>Burada görevlerini yönetebilir ve profilini oluşturabilirsin.</p>
-    </section>
+    <main>
+      <section id="home" class="section">Hoşgeldin!</section>
 
-    <section id="tasks" class="section">
-      <h2>Görevler</h2>
-      <form id="taskForm">
-        <input type="text" id="taskInput" placeholder="Yeni görev ekle..." required />
-        <input type="date" id="dueDateInput" />
-        <button type="submit">Ekle</button>
-      </form>
-      <ul id="taskList" aria-live="polite"></ul>
-    </section>
+      <section id="tasks" class="section hidden">
+        <h3>Görevlerini Listele</h3>
+        <select id="taskCategory">
+          <option>🏠 Ev</option>
+          <option>🛒 Alışveriş</option>
+          <option>🍳 Mutfak</option>
+          <option>💼 İş</option>
+          <option>🎓 Eğitim</option>
+          <option>📅 Diğer</option>
+        </select>
+        <input type="text" id="taskInput" placeholder="Görev girin" />
+        <button onclick="addTask()">Ekle</button>
+        <ul id="taskList"></ul>
+      </section>
 
-    <section id="profile" class="section">
-      <h2>Profil</h2>
-      <label for="usernameInput">Kullanıcı Adı:</label>
-      <input type="text" id="usernameInput" placeholder="Kullanıcı adınızı girin" />
-      <button id="saveProfileBtn">Kaydet</button>
-    </section>
-  </main>
+      <section id="profile" class="section hidden">
+        <h3>Profil Ayarları</h3>
+        <label>Adınız:</label>
+        <input type="text" id="profileName" />
+        <label>Emoji Avatar:</label>
+        <select id="emojiSelect">
+          <option>😊</option>
+          <option>🌸</option>
+          <option>🐱</option>
+          <option>🎀</option>
+          <option>🦄</option>
+          <option>💻</option>
+        </select>
+        <button onclick="saveProfile()">Kaydet</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>Eda Erol © 2025</p>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
