@@ -1,4 +1,4 @@
-/* Reset */
+/* Reset ve temel ayarlar */
 *,
 *::before,
 *::after {
@@ -8,8 +8,8 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f4f8;
-  color: #222;
+  background: #f9fafb;
+  color: #1f2937;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,32 +18,28 @@ body {
 }
 
 body.dark {
-  background-color: #121518;
-  color: #ddd;
+  background: #121212;
+  color: #d1d5db;
 }
 
-/* Navbar */
+/* Navbar (Üst Menü) */
 .navbar {
-  background: linear-gradient(90deg, #3b82f6, #2563eb);
-  box-shadow: 0 3px 10px rgba(38, 97, 178, 0.6);
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
   padding: 12px 24px;
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
 .navbar nav ul {
-  display: flex;
   list-style: none;
-  padding: 0;
+  display: flex;
+  gap: 24px;
   margin: 0;
-}
-
-.navbar nav ul li {
-  margin: 0 16px;
+  padding: 0;
 }
 
 .navbar nav ul li button.nav-btn {
@@ -55,39 +51,38 @@ body.dark {
   padding: 8px 18px;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  letter-spacing: 0.02em;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  letter-spacing: 0.03em;
   user-select: none;
 }
 
 .navbar nav ul li button.nav-btn:hover,
 .navbar nav ul li button.nav-btn.active {
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #f9fafb;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
 }
 
-/* Container */
+/* Ana içerik kutusu */
 .app-container {
   max-width: 520px;
   margin: 40px auto 60px;
-  background-color: white;
+  background: white;
   border-radius: 24px;
   padding: 40px 48px;
   box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.12),
+    0 10px 24px rgba(0, 0, 0, 0.12),
     0 4px 8px rgba(0, 0, 0, 0.06);
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.dark .app-container {
-  background-color: #1e1e28;
+  background: #1f2937;
   box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.9),
-    0 4px 8px rgba(0, 0, 0, 0.7);
+    0 10px 24px rgba(0, 0, 0, 0.8),
+    0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* Headings */
+/* Başlıklar */
 h1,
 h2 {
   margin-bottom: 32px;
@@ -95,6 +90,7 @@ h2 {
   text-align: center;
   letter-spacing: 0.04em;
   color: #1e293b;
+  user-select: text;
 }
 
 body.dark h1,
@@ -102,17 +98,17 @@ body.dark h2 {
   color: #d1d5db;
 }
 
-/* Inputs */
+/* Inputlar */
 input[type='text'],
 input[type='date'],
 #usernameInput,
 #profileUsername {
   width: 100%;
-  padding: 18px 22px;
+  padding: 16px 20px;
   font-size: 1.1rem;
   border: 2.5px solid #cbd5e1;
   border-radius: 16px;
-  background-color: #f8fafc;
+  background: #f8fafc;
   color: #0f172a;
   transition:
     border-color 0.3s ease,
@@ -136,12 +132,12 @@ input[type='date']:focus,
 #profileUsername:focus {
   outline: none;
   border-color: #3b82f6;
-  background-color: #e0e7ff;
+  background: #e0e7ff;
   color: #1e40af;
   box-shadow: 0 0 8px #3b82f6;
 }
 
-/* Buttons */
+/* Butonlar */
 button,
 button.nav-btn,
 #startBtn,
@@ -195,7 +191,7 @@ button.nav-btn:active,
   box-shadow: none;
 }
 
-/* Todo Header */
+/* Todo başlığı */
 .todo-header {
   display: flex;
   justify-content: space-between;
@@ -213,7 +209,7 @@ body.dark .todo-header h2 {
   color: #e0e0e0;
 }
 
-/* Header actions buttons */
+/* Header işlemleri butonları */
 .header-actions button {
   font-size: 1.6rem;
   background: transparent;
@@ -230,7 +226,7 @@ body.dark .todo-header h2 {
   box-shadow: 0 0 8px #2563eb;
 }
 
-/* Task form */
+/* Görev formu */
 #taskForm {
   display: flex;
   gap: 20px;
@@ -252,7 +248,7 @@ body.dark .todo-header h2 {
   letter-spacing: 0.04em;
 }
 
-/* Task list */
+/* Görev listesi */
 #taskList {
   list-style: none;
   margin: 0;
@@ -336,7 +332,7 @@ body.dark .task-date {
   color: #93c5fd;
 }
 
-/* Delete button */
+/* Sil butonu */
 .delete-btn {
   background-color: #ef4444;
   border: none;
@@ -355,7 +351,7 @@ body.dark .task-date {
   background-color: #b91c1c;
 }
 
-/* Hidden */
+/* Gizle */
 .hidden {
   display: none !important;
 }
