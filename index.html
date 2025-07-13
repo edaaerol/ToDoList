@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profesyonel To-Do List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-container">
+    <!-- Kullanıcı Girişi -->
+    <section class="auth-section" id="authSection" aria-label="Kullanıcı giriş bölümü">
+      <h1>Hoşgeldiniz</h1>
+      <input
+        type="text"
+        id="usernameInput"
+        placeholder="Adınızı giriniz"
+        autocomplete="off"
+        maxlength="30"
+        aria-label="Kullanıcı adı"
+      />
+      <button id="startBtn" aria-label="Başla">Başla</button>
+    </section>
+
+    <!-- To-Do List Bölümü -->
+    <section class="todo-section hidden" id="todoSection" aria-label="Görev listesi">
+      <header class="todo-header">
+        <h2 id="welcomeText"></h2>
+        <div class="header-actions">
+          <button id="themeToggleBtn" aria-label="Tema değiştir">🌓</button>
+          <button id="logoutBtn" aria-label="Çıkış yap">Çıkış</button>
+        </div>
+      </header>
+
+      <form id="taskForm" aria-label="Yeni görev ekleme formu" autocomplete="off">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Görev giriniz"
+          required
+          aria-required="true"
+          aria-label="Görev metni"
+        />
+        <input type="date" id="dueDateInput" aria-label="Son teslim tarihi" />
+        <button type="submit" aria-label="Görev ekle">Ekle</button>
+      </form>
+
+      <ul id="taskList" aria-live="polite" aria-label="Görevler listesi"></ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
