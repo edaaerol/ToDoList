@@ -1,142 +1,90 @@
-// Menü butonları ve sayfa bölümleri
-const navBtns = document.querySelectorAll('.nav-btn');
-const sections = document.querySelectorAll('.section');
+const authSection = document.getElementById("authSection");
+const todoSection = document.getElementById("todoSection");
+const usernameInput = document.getElementById("username");
+const welcomeMessage = document.getElementById("welcomeMessage");
+const taskInput = document.getElementById("taskInput");
+const dueDateInput = document.getElementById("dueDateInput");
+const taskList = document.getElementById("taskList");
 
-navBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    navBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+let currentUser = "";
 
-    const target = btn.getAttribute('data-section');
-    sections.forEach(sec => {
-      sec.classList.toggle('active', sec.id === target);
-    });
-  });
-});
-
-// Kullanıcı adı kaydetme & yükleme
-const usernameInput = document.getElementById('usernameInput');
-const saveProfileBtn = document.getElementById('saveProfileBtn');
-const taskForm = document.getElementById('taskForm');
-const taskInput = document.getElementById('taskInput');
-const dueDateInput = document.getElementById('dueDateInput');
-const taskList = document.getElementById('taskList');
-
-let currentUser = localStorage.getItem('todo_username') || '';
-
-if (!currentUser) {
-  currentUser = prompt('Kullanıcı adınızı giriniz:') || 'Misafir';
-  localStorage.setItem('todo_username', currentUser);
+function createProfile() {
+  const name = usernameInput.value.trim();
+  if (!name) return alert("Lütfen adınızı girin.");
+  currentUser = name;
+  localStorage.setItem("username", name);
+  showTodoSection();
 }
 
-usernameInput.value = currentUser;
+function showTodoSection() {
+  authSection.classList.add("hidden");
+  todoSection.classList.remove("hidden");
+  welcomeMessage.textContent = `Merhaba, ${currentUser} 👋`;
+  loadTasks();
+}
 
-// Görevleri yükle ve göster
+function addTask() {
+  const task = taskInput.value.trim();
+  const dueDate = dueDateInput.value;
+  if (!task) return alert("Görev boş olamaz.");
+
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+  tasks.push({
+    id: Date.now(),
+    user: currentUser,
+    text: task,
+    due: dueDate,
+    category: guessCategory(task)
+  });
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  taskInput.value = "";
+  dueDateInput.value = "";
+  loadTasks();
+}
+
+function guessCategory(text) {
+  text = text.toLowerCase();
+  if (text.includes("alışveriş") || text.includes("market")) return "🛒 Alışveriş";
+  if (text.includes("yemek") || text.includes("mutfak")) return "🍳 Mutfak";
+  if (text.includes("iş") || text.includes("proje")) return "💼 İş";
+  if (text.includes("ödev") || text.includes("ders")) return "🎓 Eğitim";
+  if (text.includes("ev") || text.includes("temizlik")) return "🏠 Ev";
+  return "📅 Diğer";
+}
+
 function loadTasks() {
-  const allTasks = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
-  const userTasks = allTasks.filter(task => task.user === currentUser);
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  const userTasks = tasks.filter(t => t.user === currentUser);
 
-  taskList.innerHTML = '';
-
-  if (userTasks.length === 0) {
-    taskList.innerHTML = '<li>Görev eklenmedi.</li>';
-    return;
-  }
+  taskList.innerHTML = "";
 
   userTasks.forEach(task => {
-    const li = document.createElement('li');
-    li.textContent = `${task.text}${task.dueDate ? ' (Son: ' + task.dueDate + ')' : ''}`;
-    if (task.completed) li.classList.add('completed');
-
-    // Tıklayınca tamamla
-    li.addEventListener('click', () => toggleComplete(task.id));
-
-    // Sil butonu
-    const delBtn = document.createElement('button');
-    delBtn.textContent = 'Sil';
-    delBtn.classList.add('delete-btn');
-    delBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      deleteTask(task.id);
-    });
-    li.appendChild(delBtn);
-
+    const li = document.createElement("li");
+    li.innerHTML = `<span>${task.category} ${task.text} ${task.due ? `📆 ${task.due}` : ""}</span>
+                    <button onclick="deleteTask(${task.id})">❌</button>`;
     taskList.appendChild(li);
   });
 }
 
-// Yeni görev ekle
-taskForm.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const text = taskInput.value.trim();
-  if (!text) return alert('Görev boş olamaz!');
-
-  const dueDate = dueDateInput.value;
-
-  const allTasks = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
-
-  allTasks.push({
-    id: Date.now().toString(),
-    text,
-    dueDate,
-    completed: false,
-    user: currentUser
-  });
-
-  localStorage.setItem('todo_tasks', JSON.stringify(allTasks));
-  taskInput.value = '';
-  dueDateInput.value = '';
-
-  loadTasks();
-});
-
-// Görev tamamla
-function toggleComplete(id) {
-  const allTasks = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
-
-  const task = allTasks.find(t => t.id === id);
-  if (task) {
-    task.completed = !task.completed;
-  }
-
-  localStorage.setItem('todo_tasks', JSON.stringify(allTasks));
-  loadTasks();
-}
-
-// Görev sil
 function deleteTask(id) {
-  let allTasks = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
-
-  allTasks = allTasks.filter(t => t.id !== id);
-
-  localStorage.setItem('todo_tasks', JSON.stringify(allTasks));
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  tasks = tasks.filter(t => t.id !== id);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
   loadTasks();
 }
 
-// Profil kaydet
-saveProfileBtn.addEventListener('click', () => {
-  const newName = usernameInput.value.trim();
-  if (!newName) {
-    alert('Kullanıcı adı boş olamaz!');
-    return;
+function logout() {
+  localStorage.removeItem("username");
+  location.reload();
+}
+
+// Otomatik giriş
+window.onload = () => {
+  const savedUser = localStorage.getItem("username");
+  if (savedUser) {
+    currentUser = savedUser;
+    showTodoSection();
   }
-
-  // Kullanıcı adını değiştir, görevlerin user bilgisini de güncelle
-  const allTasks = JSON.parse(localStorage.getItem('todo_tasks') || '[]');
-
-  allTasks.forEach(task => {
-    if (task.user === currentUser) {
-      task.user = newName;
-    }
-  });
-
-  localStorage.setItem('todo_tasks', JSON.stringify(allTasks));
-  currentUser = newName;
-  localStorage.setItem('todo_username', currentUser);
-  alert('Profil başarıyla güncellendi!');
-  loadTasks();
-});
-
-// İlk yüklemede görevleri göster
-loadTasks();
+};
