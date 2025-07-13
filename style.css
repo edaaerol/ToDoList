@@ -8,8 +8,8 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9fafb;
-  color: #1f2937;
+  background: #fff0f6; /* Hafif pembe arka plan */
+  color: #5f2c3e; /* Koyu pembe ton */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,18 +18,18 @@ body {
 }
 
 body.dark {
-  background: #121212;
-  color: #d1d5db;
+  background: #3b1f2a; /* Koyu pembe-mor ton */
+  color: #f8d7da; /* Açık pembe ton */
 }
 
 /* Navbar (Üst Menü) */
 .navbar {
-  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  background: linear-gradient(90deg, #d6336c, #e8598f); /* Canlı pembe degrade */
   padding: 12px 24px;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 4px 12px rgba(214, 51, 108, 0.5);
   display: flex;
   justify-content: center;
 }
@@ -58,7 +58,7 @@ body.dark {
 
 .navbar nav ul li button.nav-btn:hover,
 .navbar nav ul li button.nav-btn.active {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
 }
 
@@ -66,20 +66,20 @@ body.dark {
 .app-container {
   max-width: 520px;
   margin: 40px auto 60px;
-  background: white;
+  background: #fff0f6; /* Açık pembe kutu */
   border-radius: 24px;
   padding: 40px 48px;
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.12),
-    0 4px 8px rgba(0, 0, 0, 0.06);
+    0 10px 24px rgba(214, 51, 108, 0.12),
+    0 4px 8px rgba(214, 51, 108, 0.06);
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.dark .app-container {
-  background: #1f2937;
+  background: #5c2a3e; /* Koyu pembe kutu */
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.8),
-    0 4px 8px rgba(0, 0, 0, 0.6);
+    0 10px 24px rgba(91, 41, 62, 0.8),
+    0 4px 8px rgba(91, 41, 62, 0.6);
 }
 
 /* Başlıklar */
@@ -89,13 +89,13 @@ h2 {
   font-weight: 800;
   text-align: center;
   letter-spacing: 0.04em;
-  color: #1e293b;
+  color: #5f2c3e; /* Koyu pembe */
   user-select: text;
 }
 
 body.dark h1,
 body.dark h2 {
-  color: #d1d5db;
+  color: #f8d7da; /* Açık pembe */
 }
 
 /* Inputlar */
@@ -106,10 +106,10 @@ input[type='date'],
   width: 100%;
   padding: 16px 20px;
   font-size: 1.1rem;
-  border: 2.5px solid #cbd5e1;
+  border: 2.5px solid #f5c6cb;
   border-radius: 16px;
-  background: #f8fafc;
-  color: #0f172a;
+  background: #fff0f6;
+  color: #5f2c3e;
   transition:
     border-color 0.3s ease,
     background-color 0.3s ease,
@@ -122,7 +122,7 @@ input[type='date'],
 
 input[type='text']::placeholder,
 input[type='date']::placeholder {
-  color: #94a3b8;
+  color: #eec6d4;
   font-weight: 500;
 }
 
@@ -131,10 +131,10 @@ input[type='date']:focus,
 #usernameInput:focus,
 #profileUsername:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: #e0e7ff;
-  color: #1e40af;
-  box-shadow: 0 0 8px #3b82f6;
+  border-color: #d6336c;
+  background: #ffe6f0;
+  color: #a5284a;
+  box-shadow: 0 0 8px #d6336c;
 }
 
 /* Butonlar */
@@ -147,7 +147,7 @@ button.nav-btn,
 .header-actions button {
   font-weight: 700;
   font-size: 1.15rem;
-  background-color: #3b82f6;
+  background-color: #d6336c;
   color: white;
   border: none;
   border-radius: 20px;
@@ -174,8 +174,8 @@ button.nav-btn:focus-visible,
 #taskForm button:focus-visible,
 .header-actions button:hover,
 .header-actions button:focus-visible {
-  background-color: #2563eb;
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.7);
+  background-color: #a5284a;
+  box-shadow: 0 6px 14px rgba(165, 40, 74, 0.7);
   transform: translateY(-2px);
   outline: none;
 }
@@ -201,19 +201,19 @@ button.nav-btn:active,
 
 .todo-header h2 {
   font-size: 1.8rem;
-  color: #1e293b;
+  color: #5f2c3e;
   font-weight: 800;
 }
 
 body.dark .todo-header h2 {
-  color: #e0e0e0;
+  color: #f8d7da;
 }
 
 /* Header işlemleri butonları */
 .header-actions button {
   font-size: 1.6rem;
   background: transparent;
-  color: #3b82f6;
+  color: #d6336c;
   padding: 6px 12px;
   border-radius: 12px;
   box-shadow: none;
@@ -222,8 +222,8 @@ body.dark .todo-header h2 {
 
 .header-actions button:hover,
 .header-actions button:focus-visible {
-  color: #2563eb;
-  box-shadow: 0 0 8px #2563eb;
+  color: #a5284a;
+  box-shadow: 0 0 8px #a5284a;
 }
 
 /* Görev formu */
@@ -257,14 +257,14 @@ body.dark .todo-header h2 {
   overflow-y: auto;
   user-select: none;
   border-radius: 16px;
-  box-shadow: inset 0 0 12px #dbeafe;
-  background-color: #f0f9ff;
+  box-shadow: inset 0 0 12px #f9d6e1;
+  background-color: #fff0f6;
   transition: background-color 0.4s ease;
 }
 
 body.dark #taskList {
-  background-color: #1e293b;
-  box-shadow: inset 0 0 12px #3b82f6;
+  background-color: #5c2a3e;
+  box-shadow: inset 0 0 12px #a5284a;
 }
 
 #taskList li {
@@ -277,30 +277,30 @@ body.dark #taskList {
   border-radius: 16px;
   font-weight: 600;
   font-size: 1.1rem;
-  color: #1e293b;
+  color: #5f2c3e;
   cursor: pointer;
   transition:
     background-color 0.3s ease,
     box-shadow 0.3s ease,
     transform 0.2s ease;
   box-shadow:
-    0 4px 6px rgba(59, 130, 246, 0.15);
+    0 4px 6px rgba(214, 51, 108, 0.15);
 }
 
 body.dark #taskList li {
-  background: #2563eb;
+  background: #a5284a;
   color: white;
   box-shadow:
-    0 6px 12px rgba(21, 101, 192, 0.9);
+    0 6px 12px rgba(165, 40, 74, 0.9);
 }
 
 #taskList li:hover,
 #taskList li:focus-within {
-  background-color: #60a5fa;
+  background-color: #e85a8e;
   color: white;
   transform: translateY(-2px);
   box-shadow:
-    0 8px 16px rgba(59, 130, 246, 0.4);
+    0 8px 16px rgba(232, 90, 142, 0.6);
 }
 
 .task-text {
@@ -320,7 +320,7 @@ body.dark #taskList li {
 
 .task-date {
   font-size: 0.9rem;
-  color: #2563eb;
+  color: #d6336c;
   margin-right: 12px;
   white-space: nowrap;
   font-weight: 700;
@@ -329,12 +329,12 @@ body.dark #taskList li {
 }
 
 body.dark .task-date {
-  color: #93c5fd;
+  color: #f9b5cd;
 }
 
 /* Sil butonu */
 .delete-btn {
-  background-color: #ef4444;
+  background-color: #e4606d;
   border: none;
   color: white;
   font-weight: 700;
@@ -348,7 +348,7 @@ body.dark .task-date {
 
 .delete-btn:hover,
 .delete-btn:focus-visible {
-  background-color: #b91c1c;
+  background-color: #b33a43;
 }
 
 /* Gizle */
