@@ -1,386 +1,225 @@
-/* Reset ve temel ayarlar */
-*,
-*::before,
-*::after {
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+/* Body & font */
 body {
-  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #fff0f6; /* Hafif pembe arka plan */
-  color: #5f2c3e; /* Koyu pembe ton */
+  background-color: #fff0f5; /* Açık pembe ton */
+  color: #6a1b4d; /* Koyu pembe */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  user-select: none;
-  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-body.dark {
-  background: #3b1f2a; /* Koyu pembe-mor ton */
-  color: #f8d7da; /* Açık pembe ton */
+/* Header */
+.header {
+  background-color: #d81b60; /* Orta koyu pembe */
+  color: white;
+  padding: 20px 30px;
+  text-align: center;
 }
 
-/* Navbar (Üst Menü) */
-.navbar {
-  background: linear-gradient(90deg, #d6336c, #e8598f); /* Canlı pembe degrade */
-  padding: 12px 24px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(214, 51, 108, 0.5);
+.header h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* Menü */
+.nav-menu {
   display: flex;
   justify-content: center;
+  gap: 25px;
 }
 
-.navbar nav ul {
-  list-style: none;
-  display: flex;
-  gap: 24px;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar nav ul li button.nav-btn {
+.nav-btn {
   background: transparent;
-  border: none;
+  border: 2px solid white;
   color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
-  padding: 8px 18px;
-  border-radius: 12px;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  letter-spacing: 0.03em;
+  transition: background-color 0.3s ease, color 0.3s ease;
   user-select: none;
 }
 
-.navbar nav ul li button.nav-btn:hover,
-.navbar nav ul li button.nav-btn.active {
-  background-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+.nav-btn.active,
+.nav-btn:hover {
+  background-color: white;
+  color: #d81b60;
 }
 
-/* Ana içerik kutusu */
-.app-container {
-  max-width: 520px;
-  margin: 40px auto 60px;
-  background: #fff0f6; /* Açık pembe kutu */
-  border-radius: 24px;
-  padding: 40px 48px;
-  box-shadow:
-    0 10px 24px rgba(214, 51, 108, 0.12),
-    0 4px 8px rgba(214, 51, 108, 0.06);
-  transition: background-color 0.4s ease, color 0.4s ease;
+/* Main içerik */
+.main-content {
+  flex: 1;
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 30px 35px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(216, 27, 96, 0.15);
 }
 
-body.dark .app-container {
-  background: #5c2a3e; /* Koyu pembe kutu */
-  box-shadow:
-    0 10px 24px rgba(91, 41, 62, 0.8),
-    0 4px 8px rgba(91, 41, 62, 0.6);
+/* Bölümler gizleme */
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
 }
 
 /* Başlıklar */
-h1,
 h2 {
-  margin-bottom: 32px;
-  font-weight: 800;
-  text-align: center;
-  letter-spacing: 0.04em;
-  color: #5f2c3e; /* Koyu pembe */
-  user-select: text;
-}
-
-body.dark h1,
-body.dark h2 {
-  color: #f8d7da; /* Açık pembe */
-}
-
-/* Inputlar */
-input[type='text'],
-input[type='date'],
-#usernameInput,
-#profileUsername {
-  width: 100%;
-  padding: 16px 20px;
-  font-size: 1.1rem;
-  border: 2.5px solid #f5c6cb;
-  border-radius: 16px;
-  background: #fff0f6;
-  color: #5f2c3e;
-  transition:
-    border-color 0.3s ease,
-    background-color 0.3s ease,
-    color 0.3s ease;
-  margin-bottom: 28px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  user-select: text;
-}
-
-input[type='text']::placeholder,
-input[type='date']::placeholder {
-  color: #eec6d4;
-  font-weight: 500;
-}
-
-input[type='text']:focus,
-input[type='date']:focus,
-#usernameInput:focus,
-#profileUsername:focus {
-  outline: none;
-  border-color: #d6336c;
-  background: #ffe6f0;
-  color: #a5284a;
-  box-shadow: 0 0 8px #d6336c;
-}
-
-/* Butonlar */
-button,
-button.nav-btn,
-#startBtn,
-#saveProfileBtn,
-#logoutBtn,
-#taskForm button,
-.header-actions button {
+  color: #d81b60;
+  margin-bottom: 25px;
   font-weight: 700;
-  font-size: 1.15rem;
-  background-color: #d6336c;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+/* Form */
+form {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+input[type="text"],
+input[type="date"] {
+  flex: 1 1 200px;
+  padding: 12px 15px;
+  border-radius: 25px;
+  border: 2px solid #d81b60;
+  font-size: 1rem;
+  color: #6a1b4d;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]::placeholder,
+input[type="date"]::placeholder {
+  color: #c46a8e;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+  border-color: #9c145a;
+  outline: none;
+}
+
+/* Ekle butonu */
+button[type="submit"] {
+  background-color: #d81b60;
   color: white;
   border: none;
-  border-radius: 20px;
-  padding: 14px 32px;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 700;
   cursor: pointer;
-  user-select: none;
-  transition:
-    background-color 0.35s ease,
-    box-shadow 0.3s ease,
-    transform 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
-button:hover,
-button:focus-visible,
-button.nav-btn:hover,
-button.nav-btn:focus-visible,
-#startBtn:hover,
-#startBtn:focus-visible,
-#saveProfileBtn:hover,
-#saveProfileBtn:focus-visible,
-#logoutBtn:hover,
-#logoutBtn:focus-visible,
-#taskForm button:hover,
-#taskForm button:focus-visible,
-.header-actions button:hover,
-.header-actions button:focus-visible {
-  background-color: #a5284a;
-  box-shadow: 0 6px 14px rgba(165, 40, 74, 0.7);
-  transform: translateY(-2px);
-  outline: none;
-}
-
-button:active,
-button.nav-btn:active,
-#startBtn:active,
-#saveProfileBtn:active,
-#logoutBtn:active,
-#taskForm button:active,
-.header-actions button:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-/* Todo başlığı */
-.todo-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 36px;
-}
-
-.todo-header h2 {
-  font-size: 1.8rem;
-  color: #5f2c3e;
-  font-weight: 800;
-}
-
-body.dark .todo-header h2 {
-  color: #f8d7da;
-}
-
-/* Header işlemleri butonları */
-.header-actions button {
-  font-size: 1.6rem;
-  background: transparent;
-  color: #d6336c;
-  padding: 6px 12px;
-  border-radius: 12px;
-  box-shadow: none;
-  transition: color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.header-actions button:hover,
-.header-actions button:focus-visible {
-  color: #a5284a;
-  box-shadow: 0 0 8px #a5284a;
-}
-
-/* Görev formu */
-#taskForm {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 36px;
-  justify-content: center;
-}
-
-#taskForm input[type='text'],
-#taskForm input[type='date'] {
-  flex: 1 1 60%;
-  min-width: 220px;
-  font-weight: 600;
-}
-
-#taskForm button {
-  flex: 1 1 30%;
-  min-width: 120px;
-  letter-spacing: 0.04em;
+button[type="submit"]:hover {
+  background-color: #9c145a;
 }
 
 /* Görev listesi */
 #taskList {
   list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 400px;
+  max-height: 350px;
   overflow-y: auto;
-  user-select: none;
-  border-radius: 16px;
-  box-shadow: inset 0 0 12px #f9d6e1;
-  background-color: #fff0f6;
-  transition: background-color 0.4s ease;
-}
-
-body.dark #taskList {
-  background-color: #5c2a3e;
-  box-shadow: inset 0 0 12px #a5284a;
 }
 
 #taskList li {
+  background-color: #ffe6f0;
+  padding: 14px 20px;
+  margin-bottom: 14px;
+  border-radius: 18px;
+  font-weight: 600;
+  color: #6a1b4d;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  margin: 10px 12px;
-  background: white;
-  border-radius: 16px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: #5f2c3e;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.2s ease;
-  box-shadow:
-    0 4px 6px rgba(214, 51, 108, 0.15);
 }
 
-body.dark #taskList li {
-  background: #a5284a;
-  color: white;
-  box-shadow:
-    0 6px 12px rgba(165, 40, 74, 0.9);
-}
-
-#taskList li:hover,
-#taskList li:focus-within {
-  background-color: #e85a8e;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow:
-    0 8px 16px rgba(232, 90, 142, 0.6);
-}
-
-.task-text {
-  flex-grow: 1;
-  user-select: text;
-  margin-right: 12px;
-  max-width: 70%;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-
-.task-completed {
+#taskList li.completed {
   text-decoration: line-through;
   opacity: 0.6;
-  color: #555 !important;
-}
-
-.task-date {
-  font-size: 0.9rem;
-  color: #d6336c;
-  margin-right: 12px;
-  white-space: nowrap;
-  font-weight: 700;
-  user-select: none;
-  flex-shrink: 0;
-}
-
-body.dark .task-date {
-  color: #f9b5cd;
 }
 
 /* Sil butonu */
 .delete-btn {
-  background-color: #e4606d;
+  background-color: transparent;
   border: none;
-  color: white;
+  color: #d81b60;
   font-weight: 700;
-  border-radius: 14px;
   cursor: pointer;
-  padding: 8px 18px;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: color 0.3s ease;
   user-select: none;
-  flex-shrink: 0;
 }
 
-.delete-btn:hover,
-.delete-btn:focus-visible {
-  background-color: #b33a43;
+.delete-btn:hover {
+  color: #9c145a;
 }
 
-/* Gizle */
-.hidden {
-  display: none !important;
+/* Profil input */
+#usernameInput {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 25px;
+  border: 2px solid #d81b60;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #6a1b4d;
+  transition: border-color 0.3s ease;
+}
+
+#usernameInput::placeholder {
+  color: #c46a8e;
+}
+
+#usernameInput:focus {
+  border-color: #9c145a;
+  outline: none;
+}
+
+/* Profil kaydet butonu */
+#saveProfileBtn {
+  width: 100%;
+  padding: 14px;
+  background-color: #d81b60;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#saveProfileBtn:hover {
+  background-color: #9c145a;
 }
 
 /* Responsive */
-@media (max-width: 540px) {
-  .app-container {
-    padding: 28px 24px;
-    margin: 24px 12px 48px;
+@media (max-width: 600px) {
+  .main-content {
+    margin: 20px 15px;
+    padding: 25px 20px;
   }
 
-  #taskForm {
+  form {
     flex-direction: column;
   }
 
-  #taskForm input[type='text'],
-  #taskForm input[type='date'],
-  #taskForm button {
-    flex: 1 1 100%;
-    min-width: auto;
-  }
-
-  #taskList li {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 16px 18px;
-  }
-
-  .task-date {
-    margin: 8px 0 0 0;
+  button[type="submit"] {
+    width: 100%;
   }
 }
