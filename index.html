@@ -3,13 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Profesyonel To-Do List</title>
+  <title>Profesyonel To-Do List Uygulaması</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="navbar">
+    <nav>
+      <ul>
+        <li><button class="nav-btn active" data-target="homeSection">Ana Sayfa</button></li>
+        <li><button class="nav-btn" data-target="todoSection">Görevler</button></li>
+        <li><button class="nav-btn" data-target="profileSection">Profil</button></li>
+      </ul>
+    </nav>
+  </header>
+
   <main class="app-container">
-    <!-- Kullanıcı Girişi -->
+    <!-- Giriş Bölümü -->
     <section class="auth-section" id="authSection" aria-label="Kullanıcı giriş bölümü">
       <h1>Hoşgeldiniz</h1>
       <input
@@ -23,13 +33,18 @@
       <button id="startBtn" aria-label="Başla">Başla</button>
     </section>
 
-    <!-- To-Do List Bölümü -->
-    <section class="todo-section hidden" id="todoSection" aria-label="Görev listesi">
+    <!-- Ana Sayfa -->
+    <section class="hidden" id="homeSection" aria-label="Ana sayfa">
+      <h1>Hoşgeldiniz!</h1>
+      <p>Bu uygulama ile görevlerinizi kolayca takip edin, tamamlayın ve yönetim sağlayın.</p>
+    </section>
+
+    <!-- Görevler -->
+    <section class="hidden todo-section" id="todoSection" aria-label="Görev listesi">
       <header class="todo-header">
         <h2 id="welcomeText"></h2>
         <div class="header-actions">
           <button id="themeToggleBtn" aria-label="Tema değiştir">🌓</button>
-          <button id="logoutBtn" aria-label="Çıkış yap">Çıkış</button>
         </div>
       </header>
 
@@ -47,6 +62,15 @@
       </form>
 
       <ul id="taskList" aria-live="polite" aria-label="Görevler listesi"></ul>
+    </section>
+
+    <!-- Profil -->
+    <section class="hidden" id="profileSection" aria-label="Profil sayfası">
+      <h2>Profil Bilgileri</h2>
+      <p>Kullanıcı Adınız:</p>
+      <input type="text" id="profileUsername" maxlength="30" />
+      <button id="saveProfileBtn">Kaydet</button>
+      <button id="logoutBtn">Çıkış Yap</button>
     </section>
   </main>
 
