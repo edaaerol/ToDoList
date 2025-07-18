@@ -1,71 +1,186 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Görev Uygulaması</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yapılacaklar Listesi</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #f0f2f5;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  #todo-form {
+    display: flex;
+    margin-top: 20px;
+  }
+  #todo-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 6px 0 0 6px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  #todo-input:focus {
+    border-color: #3b82f6;
+  }
+  #todo-form button {
+    padding: 0 20px;
+    font-size: 16px;
+    background: #3b82f6;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 0 6px 6px 0;
+    transition: background-color 0.3s;
+  }
+  #todo-form button:hover {
+    background: #2563eb;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 25px;
+  }
+  li {
+    background: white;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+    transition: background-color 0.3s;
+  }
+  li.completed span {
+    text-decoration: line-through;
+    color: #888;
+  }
+  li:hover {
+    background-color: #f9fafb;
+  }
+  span {
+    font-size: 16px;
+  }
+  .btn-group button {
+    margin-left: 8px;
+    border: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  .complete-btn {
+    background: #10b981;
+    color: white;
+  }
+  .complete-btn:hover {
+    background: #059669;
+  }
+  .delete-btn {
+    background: #ef4444;
+    color: white;
+  }
+  .delete-btn:hover {
+    background: #b91c1c;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    #todo-form {
+      flex-direction: column;
+    }
+    #todo-input, #todo-form button {
+      width: 100%;
+      border-radius: 6px;
+      margin: 5px 0;
+    }
+    .btn-group button {
+      padding: 8px 14px;
+      font-size: 16px;
+    }
+  }
+</style>
 </head>
 <body>
-  <div id="login-screen" class="screen active">
-    <h1>✨ Görev Listem</h1>
-    <input type="text" id="username" placeholder="Adınızı girin" />
-    <button onclick="login()">Giriş Yap</button>
-  </div>
 
-  <div id="app-screen" class="screen">
-    <header>
-      <h2 id="welcome"></h2>
-      <nav>
-        <button onclick="showSection('home')">🏠 Ana Sayfa</button>
-        <button onclick="showSection('tasks')">📋 Görevler</button>
-        <button onclick="showSection('profile')">👤 Profil</button>
-        <button onclick="logout()">🚪 Çıkış</button>
-      </nav>
-    </header>
+<h1>Yapılacaklar Listesi</h1>
 
-    <main>
-      <section id="home" class="section active">
-        <h3>Hoş geldin! Bugün harika şeyler yapabilirsin 💪</h3>
-      </section>
+<form id="todo-form">
+  <input type="text" id="todo-input" placeholder="Yeni görev ekle..." required autocomplete="off" />
+  <button type="submit">Ekle</button>
+</form>
 
-      <section id="tasks" class="section">
-        <h3>Görevlerini Planla</h3>
-        <select id="taskCategory">
-          <option>🏠 Ev</option>
-          <option>🛒 Alışveriş</option>
-          <option>🍳 Mutfak</option>
-          <option>💼 İş</option>
-          <option>🎓 Eğitim</option>
-          <option>📅 Diğer</option>
-        </select>
-        <input type="text" id="taskInput" placeholder="Yeni görev girin" />
-        <button onclick="addTask()">Ekle</button>
-        <ul id="taskList"></ul>
-      </section>
+<ul id="todo-list"></ul>
 
-      <section id="profile" class="section">
-        <h3>Profil</h3>
-        <label>Kullanıcı Adı:</label>
-        <input type="text" id="profileName" />
-        <label>Emoji Avatar:</label>
-        <select id="avatarSelect">
-          <option>😊</option>
-          <option>🐱</option>
-          <option>🌸</option>
-          <option>🦄</option>
-          <option>💻</option>
-          <option>🎀</option>
-        </select>
-        <button onclick="saveProfile()">Kaydet</button>
-      </section>
-    </main>
+<script>
+  const todoForm = document.getElementById('todo-form');
+  const todoInput = document.getElementById('todo-input');
+  const todoList = document.getElementById('todo-list');
 
-    <footer>
-      <p>Eda Erol © 2025</p>
-    </footer>
-  </div>
+  // LocalStorage'dan görevleri al, yoksa boş dizi
+  let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-  <script src="script.js"></script>
+  // Görevleri listele
+  function renderTodos() {
+    todoList.innerHTML = '';
+    todos.forEach((todo, index) => {
+      const li = document.createElement('li');
+      li.className = todo.completed ? 'completed' : '';
+      li.innerHTML = `
+        <span>${todo.text}</span>
+        <div class="btn-group">
+          <button class="complete-btn">${todo.completed ? 'Geri Al' : 'Tamamla'}</button>
+          <button class="delete-btn">Sil</button>
+        </div>
+      `;
+
+      // Tamamlama butonu
+      li.querySelector('.complete-btn').onclick = () => {
+        todos[index].completed = !todos[index].completed;
+        saveAndRender();
+      };
+
+      // Silme butonu
+      li.querySelector('.delete-btn').onclick = () => {
+        todos.splice(index, 1);
+        saveAndRender();
+      };
+
+      todoList.appendChild(li);
+    });
+  }
+
+  // LocalStorage'a kaydet ve listeyi güncelle
+  function saveAndRender() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+    renderTodos();
+  }
+
+  // Yeni görev ekle
+  todoForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const task = todoInput.value.trim();
+    if (task) {
+      todos.push({ text: task, completed: false });
+      todoInput.value = '';
+      saveAndRender();
+    }
+  });
+
+  // Sayfa yüklendiğinde listeyi göster
+  renderTodos();
+</script>
+
 </body>
 </html>
