@@ -6,194 +6,281 @@
 <title>Profil ve To-Do List</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  /* Genel body ayarları */
   body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #6a82fb, #fc5c7d);
     min-height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding: 40px 20px;
+    color: #2e2e2e;
   }
+
+  /* Ana kutu (profil ve app) */
   #app, #profile-container {
     background: #fff;
     width: 100%;
     max-width: 480px;
-    border-radius: 12px;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-    padding: 30px 25px 40px;
+    border-radius: 16px;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+    padding: 32px 30px 45px;
+    box-sizing: border-box;
   }
-  #app { display: none; }
-  #profile-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
 
+  /* Başlangıçta app gizli */
+  #app { display: none; }
+
+  /* Profil ekranı flex düzeni */
+  #profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Başlık */
   h1 {
-    margin: 0 0 25px;
+    margin: 0 0 30px;
     color: #333;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 1px;
     text-align: center;
   }
 
+  /* Profil input */
   input[type="text"] {
     width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1.8px solid #ddd;
-    font-size: 16px;
-    transition: border-color 0.3s;
-    outline: none;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    font-size: 17px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
   }
   input[type="text"]:focus {
-    border-color: #667eea;
-  }
-  button {
-    background: #667eea;
-    border: none;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  button:hover {
-    background: #5563c1;
+    border-color: #6a82fb;
+    outline: none;
+    box-shadow: 0 0 8px rgba(106,130,251,0.4);
   }
 
+  /* Butonlar genel */
+  button {
+    background: #6a82fb;
+    border: none;
+    color: white;
+    padding: 14px 26px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.7px;
+    box-shadow: 0 6px 12px rgba(106,130,251,0.35);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  button:hover {
+    background: #5578e3;
+    box-shadow: 0 8px 18px rgba(85,120,227,0.55);
+  }
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 12px 3px rgba(106,130,251,0.6);
+  }
+
+  /* Profil değiştir butonu */
+  #change-profile-btn {
+    background: #fc5c7d;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(252,92,125,0.4);
+  }
+  #change-profile-btn:hover {
+    background: #e84c6d;
+    box-shadow: 0 6px 14px rgba(232,76,109,0.6);
+  }
+
+  /* Kullanıcı ismi ve düzenleme butonu */
   #user-name {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     color: #444;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  #change-profile-btn {
-    background: #ef4444;
-    font-size: 14px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    margin-left: 12px;
-    transition: background-color 0.3s;
-  }
-  #change-profile-btn:hover {
-    background: #b91c1c;
-  }
-
-  /* To-Do List stilleri (önceki örnekle aynı) */
+  /* To-Do form düzeni */
   form {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 28px;
   }
   input#todo-input {
     flex: 1;
+    padding: 14px 18px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    transition: border-color 0.3s ease;
+  }
+  input#todo-input:focus {
+    border-color: #6a82fb;
+    outline: none;
+    box-shadow: 0 0 8px rgba(106,130,251,0.4);
   }
   select {
-    width: 130px;
+    width: 140px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    font-size: 16px;
+    padding: 14px 10px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  select:focus {
+    border-color: #6a82fb;
+    outline: none;
+    box-shadow: 0 0 8px rgba(106,130,251,0.4);
   }
 
+  /* Filtre butonları */
   #filters {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 25px;
+    gap: 14px;
+    margin-bottom: 30px;
   }
   #filters button {
-    background: #eee;
-    color: #333;
-    border-radius: 8px;
+    background: #f0f0f0;
+    color: #666;
+    border-radius: 12px;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 20px;
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.3s;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   #filters button.active,
   #filters button:hover {
-    background: #667eea;
+    background: #6a82fb;
     color: white;
+    box-shadow: 0 6px 12px rgba(106,130,251,0.35);
   }
 
+  /* Görev listesi */
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
   li {
-    background: #f9f9f9;
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 12px;
+    background: #fafafa;
+    border-radius: 14px;
+    padding: 16px 22px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.07);
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    cursor: default;
   }
   li:hover {
-    background-color: #e3e8ff;
-    transform: translateY(-2px);
+    background-color: #f0f4ff;
+    transform: translateY(-3px);
   }
   li.completed {
-    background-color: #d4f5d4;
+    background-color: #dff7e6;
     text-decoration: line-through;
     color: #5a8a5a;
   }
-  li[data-priority="Düşük"] { border-left: 6px solid #94a3b8; }
-  li[data-priority="Orta"] { border-left: 6px solid #facc15; }
-  li[data-priority="Yüksek"] { border-left: 6px solid #ef4444; }
+  li[data-priority="Düşük"] { border-left: 8px solid #94a3b8; }
+  li[data-priority="Orta"] { border-left: 8px solid #facc15; }
+  li[data-priority="Yüksek"] { border-left: 8px solid #ef4444; }
 
+  /* Görev sol taraf düzeni */
   .left {
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
   }
   .left input[type="checkbox"] {
     width: 22px;
     height: 22px;
     cursor: pointer;
+    border-radius: 4px;
+    border: 2px solid #6a82fb;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
+  .left input[type="checkbox"]:checked {
+    background-color: #6a82fb;
+    border-color: #4f63cc;
+  }
+
+  /* Görev metni */
   .task-text {
     font-size: 17px;
     user-select: none;
+    outline-offset: 3px;
+    min-width: 50px;
+    max-width: 100%;
+    word-break: break-word;
+    transition: color 0.3s ease;
   }
   .task-text[contenteditable="true"] {
-    border-bottom: 1px dashed #667eea;
+    border-bottom: 2px dashed #6a82fb;
     outline: none;
     cursor: text;
-  }
-  .right {
-    display: flex;
-    gap: 10px;
-  }
-  .btn {
-    background: #667eea;
-    border: none;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: background-color 0.3s;
-  }
-  .btn.delete {
-    background: #ef4444;
-  }
-  .btn:hover.delete {
-    background: #b91c1c;
-  }
-  .btn:hover {
-    background: #5563c1;
+    color: #222;
   }
 
+  /* Sağdaki butonlar */
+  .right {
+    display: flex;
+    gap: 14px;
+  }
+  .btn {
+    background: #6a82fb;
+    border: none;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(106,130,251,0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  .btn.delete {
+    background: #fc5c7d;
+    box-shadow: 0 4px 10px rgba(252,92,125,0.35);
+  }
+  .btn.delete:hover {
+    background: #e63c63;
+    box-shadow: 0 6px 14px rgba(230,60,99,0.55);
+  }
+  .btn:hover:not(.delete) {
+    background: #5578e3;
+    box-shadow: 0 6px 14px rgba(85,120,227,0.45);
+  }
+
+  /* Responsive */
   @media (max-width: 480px) {
     #app, #profile-container {
-      padding: 20px 15px 30px;
+      padding: 25px 20px 35px;
     }
     form {
       flex-direction: column;
@@ -202,7 +289,7 @@
       width: 100%;
     }
     ul {
-      margin-top: 15px;
+      margin-top: 20px;
     }
   }
 </style>
@@ -210,40 +297,41 @@
 <body>
 
 <!-- Profil girişi -->
-<div id="profile-container">
+<div id="profile-container" role="region" aria-label="Profil oluşturma">
   <h1>Hoşgeldin!</h1>
   <p>Lütfen profil ismini gir:</p>
-  <input type="text" id="profile-input" placeholder="İsminizi yazınız..." autocomplete="off" />
-  <button id="save-profile-btn">Kaydet</button>
+  <input type="text" id="profile-input" placeholder="İsminizi yazınız..." autocomplete="off" aria-required="true" />
+  <button id="save-profile-btn" aria-label="Profil ismini kaydet">Kaydet</button>
 </div>
 
 <!-- To-Do List uygulaması -->
-<div id="app">
+<div id="app" role="main" aria-label="Yapılacaklar Listesi Uygulaması">
   <div id="user-name">
-    Merhaba, <span id="username-display"></span>
+    Merhaba, <span id="username-display" aria-live="polite"></span>
     <button id="change-profile-btn" aria-label="Profili değiştir">Profili Değiştir</button>
   </div>
 
-  <form id="todo-form" autocomplete="off">
-    <input type="text" id="todo-input" placeholder="Yeni görev ekle..." required />
-    <select id="priority-select" aria-label="Öncelik seçin">
+  <form id="todo-form" autocomplete="off" aria-label="Yeni görev ekleme formu">
+    <input type="text" id="todo-input" placeholder="Yeni görev ekle..." required aria-required="true" />
+    <select id="priority-select" aria-label="Görev önceliği seçin">
       <option value="Düşük">Düşük</option>
       <option value="Orta" selected>Orta</option>
       <option value="Yüksek">Yüksek</option>
     </select>
-    <button type="submit">Ekle</button>
+    <button type="submit" aria-label="Görev ekle">Ekle</button>
   </form>
 
-  <div id="filters">
+  <div id="filters" role="group" aria-label="Görev filtreleri">
     <button class="filter-btn active" data-filter="all" aria-pressed="true">Tümü</button>
     <button class="filter-btn" data-filter="active" aria-pressed="false">Aktif</button>
     <button class="filter-btn" data-filter="completed" aria-pressed="false">Tamamlanan</button>
   </div>
 
-  <ul id="todo-list" aria-live="polite" aria-relevant="additions removals"></ul>
+  <ul id="todo-list" aria-live="polite" aria-relevant="additions removals" tabindex="0"></ul>
 </div>
 
 <script>
+  // Elementler
   const profileContainer = document.getElementById('profile-container');
   const profileInput = document.getElementById('profile-input');
   const saveProfileBtn = document.getElementById('save-profile-btn');
@@ -260,7 +348,7 @@
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
   let currentFilter = 'all';
 
-  // Kullanıcı profilini kontrol et
+  // Profil kontrolü
   function checkProfile() {
     const username = localStorage.getItem('username');
     if(username && username.trim() !== '') {
@@ -273,11 +361,12 @@
     }
   }
 
-  // Profil kaydet
+  // Profil kaydetme
   saveProfileBtn.addEventListener('click', () => {
     const name = profileInput.value.trim();
     if(name.length === 0) {
       alert('Lütfen geçerli bir isim giriniz.');
+      profileInput.focus();
       return;
     }
     localStorage.setItem('username', name);
@@ -285,7 +374,7 @@
     checkProfile();
   });
 
-  // Profili değiştirme
+  // Profil değiştirme ve reset
   changeProfileBtn.addEventListener('click', () => {
     if(confirm('Profilinizi değiştirmek istediğinize emin misiniz? Tüm görevler silinecek.')) {
       localStorage.removeItem('username');
@@ -301,7 +390,7 @@
     localStorage.setItem('todos', JSON.stringify(todos));
   }
 
-  // Görevleri listele
+  // Görevleri göster
   function renderTodos() {
     todoList.innerHTML = '';
 
@@ -312,7 +401,7 @@
     });
 
     if(filteredTodos.length === 0) {
-      todoList.innerHTML = '<li style="text-align:center; color:#666;">Görev bulunmamaktadır.</li>';
+      todoList.innerHTML = '<li style="text-align:center; color:#888;">Görev bulunmamaktadır.</li>';
       return;
     }
 
@@ -332,6 +421,7 @@
         </div>
       `;
 
+      // Tamamlandı değiştir
       li.querySelector('input[type="checkbox"]').addEventListener('change', () => {
         todos[index].completed = !todos[index].completed;
         saveTodos();
@@ -341,12 +431,14 @@
       const taskTextSpan = li.querySelector('.task-text');
       const editBtn = li.querySelector('.edit');
 
+      // Düzenle butonu
       editBtn.addEventListener('click', () => {
         taskTextSpan.contentEditable = "true";
         taskTextSpan.focus();
         document.execCommand('selectAll', false, null);
       });
 
+      // Düzenlemeyi bitir
       function finishEditing(e) {
         if (e.type === 'keydown' && e.key !== 'Enter') return;
         e.preventDefault();
@@ -365,6 +457,7 @@
       taskTextSpan.addEventListener('keydown', finishEditing);
       taskTextSpan.addEventListener('blur', finishEditing);
 
+      // Sil butonu
       li.querySelector('.delete').addEventListener('click', () => {
         if(confirm('Bu görevi silmek istediğinize emin misiniz?')) {
           todos.splice(index, 1);
@@ -377,6 +470,7 @@
     });
   }
 
+  // Filtre butonları
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       filterButtons.forEach(btn => {
@@ -390,6 +484,7 @@
     });
   });
 
+  // Görev ekleme
   todoForm.addEventListener('submit', e => {
     e.preventDefault();
     const text = todoInput.value.trim();
@@ -406,7 +501,7 @@
     renderTodos();
   });
 
-  // Başlangıçta profil kontrol et ve listeyi göster
+  // Başlangıç
   checkProfile();
   renderTodos();
 </script>
