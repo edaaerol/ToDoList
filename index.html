@@ -3,182 +3,365 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Yapılacaklar Listesi</title>
+<title>Profesyonel To-Do List</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
   body {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 0 20px;
-    background: #f0f2f5;
-  }
-  h1 {
-    text-align: center;
-    color: #333;
-  }
-  #todo-form {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    margin: 0;
     display: flex;
-    margin-top: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
   }
-  #todo-input {
+
+  #app {
+    background: #fff;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    padding: 30px 25px 40px;
+  }
+
+  h1 {
+    margin: 0 0 25px;
+    color: #333;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  input[type="text"] {
     flex: 1;
-    padding: 10px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1.8px solid #ddd;
     font-size: 16px;
-    border: 2px solid #ddd;
-    border-radius: 6px 0 0 6px;
-    outline: none;
     transition: border-color 0.3s;
   }
-  #todo-input:focus {
-    border-color: #3b82f6;
+
+  input[type="text"]:focus {
+    border-color: #667eea;
+    outline: none;
   }
-  #todo-form button {
-    padding: 0 20px;
+
+  select {
+    width: 130px;
+    border-radius: 8px;
+    border: 1.8px solid #ddd;
     font-size: 16px;
-    background: #3b82f6;
+    padding: 12px 10px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  select:focus {
+    border-color: #667eea;
+    outline: none;
+  }
+
+  button {
+    background: #667eea;
     border: none;
     color: white;
+    padding: 0 20px;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 0 6px 6px 0;
+    font-weight: 600;
+    font-size: 16px;
     transition: background-color 0.3s;
   }
-  #todo-form button:hover {
-    background: #2563eb;
+  button:hover {
+    background: #5563c1;
   }
+
+  /* Filtre butonları */
+  #filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  #filters button {
+    background: #eee;
+    color: #333;
+    border-radius: 8px;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  #filters button.active,
+  #filters button:hover {
+    background: #667eea;
+    color: white;
+  }
+
   ul {
     list-style: none;
     padding: 0;
-    margin-top: 25px;
+    margin: 0;
   }
+
   li {
-    background: white;
-    padding: 12px 15px;
-    border-radius: 6px;
-    margin-bottom: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-    transition: background-color 0.3s;
-  }
-  li.completed span {
-    text-decoration: line-through;
-    color: #888;
+    transition: background-color 0.3s, transform 0.2s;
   }
   li:hover {
-    background-color: #f9fafb;
+    background-color: #e3e8ff;
+    transform: translateY(-2px);
   }
-  span {
-    font-size: 16px;
+  li.completed {
+    background-color: #d4f5d4;
+    text-decoration: line-through;
+    color: #5a8a5a;
   }
-  .btn-group button {
-    margin-left: 8px;
-    border: none;
+
+  /* Öncelik renkleri */
+  li[data-priority="Düşük"] {
+    border-left: 6px solid #94a3b8;
+  }
+  li[data-priority="Orta"] {
+    border-left: 6px solid #facc15;
+  }
+  li[data-priority="Yüksek"] {
+    border-left: 6px solid #ef4444;
+  }
+
+  .left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .left input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
     cursor: pointer;
-    padding: 6px 12px;
-    border-radius: 5px;
+  }
+
+  .task-text {
+    font-size: 17px;
+    user-select: none;
+  }
+
+  /* Düzenleme modunda */
+  .task-text[contenteditable="true"] {
+    border-bottom: 1px dashed #667eea;
+    outline: none;
+    cursor: text;
+  }
+
+  .right {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    background: #667eea;
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
     font-size: 14px;
     transition: background-color 0.3s;
   }
-  .complete-btn {
-    background: #10b981;
-    color: white;
-  }
-  .complete-btn:hover {
-    background: #059669;
-  }
-  .delete-btn {
+  .btn.delete {
     background: #ef4444;
-    color: white;
   }
-  .delete-btn:hover {
+  .btn:hover.delete {
     background: #b91c1c;
+  }
+  .btn:hover {
+    background: #5563c1;
   }
 
   /* Responsive */
   @media (max-width: 480px) {
-    #todo-form {
+    #app {
+      padding: 20px 15px 30px;
+    }
+    form {
       flex-direction: column;
     }
-    #todo-input, #todo-form button {
+    select, input[type="text"], button {
       width: 100%;
-      border-radius: 6px;
-      margin: 5px 0;
     }
-    .btn-group button {
-      padding: 8px 14px;
-      font-size: 16px;
+    ul {
+      margin-top: 15px;
     }
   }
 </style>
 </head>
 <body>
 
-<h1>Yapılacaklar Listesi</h1>
+<div id="app">
+  <h1>Profesyonel To-Do List</h1>
+  <form id="todo-form" autocomplete="off">
+    <input type="text" id="todo-input" placeholder="Yeni görev ekle..." required />
+    <select id="priority-select" aria-label="Öncelik seçin">
+      <option value="Düşük">Düşük</option>
+      <option value="Orta" selected>Orta</option>
+      <option value="Yüksek">Yüksek</option>
+    </select>
+    <button type="submit">Ekle</button>
+  </form>
 
-<form id="todo-form">
-  <input type="text" id="todo-input" placeholder="Yeni görev ekle..." required autocomplete="off" />
-  <button type="submit">Ekle</button>
-</form>
+  <div id="filters">
+    <button class="filter-btn active" data-filter="all" aria-pressed="true">Tümü</button>
+    <button class="filter-btn" data-filter="active" aria-pressed="false">Aktif</button>
+    <button class="filter-btn" data-filter="completed" aria-pressed="false">Tamamlanan</button>
+  </div>
 
-<ul id="todo-list"></ul>
+  <ul id="todo-list" aria-live="polite" aria-relevant="additions removals"></ul>
+</div>
 
 <script>
   const todoForm = document.getElementById('todo-form');
   const todoInput = document.getElementById('todo-input');
+  const prioritySelect = document.getElementById('priority-select');
   const todoList = document.getElementById('todo-list');
+  const filterButtons = document.querySelectorAll('#filters .filter-btn');
 
-  // LocalStorage'dan görevleri al, yoksa boş dizi
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
+  let currentFilter = 'all';
 
-  // Görevleri listele
+  function saveTodos() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
+
   function renderTodos() {
     todoList.innerHTML = '';
-    todos.forEach((todo, index) => {
+
+    const filteredTodos = todos.filter(todo => {
+      if (currentFilter === 'active') return !todo.completed;
+      if (currentFilter === 'completed') return todo.completed;
+      return true;
+    });
+
+    if(filteredTodos.length === 0) {
+      todoList.innerHTML = '<li style="text-align:center; color:#666;">Görev bulunmamaktadır.</li>';
+      return;
+    }
+
+    filteredTodos.forEach((todo, index) => {
       const li = document.createElement('li');
       li.className = todo.completed ? 'completed' : '';
+      li.setAttribute('data-priority', todo.priority);
+
       li.innerHTML = `
-        <span>${todo.text}</span>
-        <div class="btn-group">
-          <button class="complete-btn">${todo.completed ? 'Geri Al' : 'Tamamla'}</button>
-          <button class="delete-btn">Sil</button>
+        <div class="left">
+          <input type="checkbox" ${todo.completed ? 'checked' : ''} aria-label="Görev tamamlandı mı?"/>
+          <span class="task-text" tabindex="0" contenteditable="false" aria-label="Görev: ${todo.text}">${todo.text}</span>
+        </div>
+        <div class="right">
+          <button class="btn edit" aria-label="Görevi düzenle">Düzenle</button>
+          <button class="btn delete" aria-label="Görevi sil">Sil</button>
         </div>
       `;
 
-      // Tamamlama butonu
-      li.querySelector('.complete-btn').onclick = () => {
+      // Checkbox tamamla/geri al
+      li.querySelector('input[type="checkbox"]').addEventListener('change', () => {
         todos[index].completed = !todos[index].completed;
-        saveAndRender();
-      };
+        saveTodos();
+        renderTodos();
+      });
 
-      // Silme butonu
-      li.querySelector('.delete-btn').onclick = () => {
-        todos.splice(index, 1);
-        saveAndRender();
-      };
+      // Düzenle butonu
+      const taskTextSpan = li.querySelector('.task-text');
+      const editBtn = li.querySelector('.edit');
+
+      editBtn.addEventListener('click', () => {
+        taskTextSpan.contentEditable = "true";
+        taskTextSpan.focus();
+        // Seçimi başa al
+        document.execCommand('selectAll', false, null);
+      });
+
+      // Düzenleme bitince (Enter veya blur)
+      function finishEditing(e) {
+        if (e.type === 'keydown' && e.key !== 'Enter') return;
+        e.preventDefault();
+        const newText = taskTextSpan.textContent.trim();
+        if (newText.length === 0) {
+          alert('Görev boş olamaz!');
+          taskTextSpan.textContent = todos[index].text;
+        } else {
+          todos[index].text = newText;
+          saveTodos();
+        }
+        taskTextSpan.contentEditable = "false";
+        renderTodos();
+      }
+
+      taskTextSpan.addEventListener('keydown', finishEditing);
+      taskTextSpan.addEventListener('blur', finishEditing);
+
+      // Sil butonu
+      li.querySelector('.delete').addEventListener('click', () => {
+        if(confirm('Bu görevi silmek istediğinize emin misiniz?')) {
+          todos.splice(index, 1);
+          saveTodos();
+          renderTodos();
+        }
+      });
 
       todoList.appendChild(li);
     });
   }
 
-  // LocalStorage'a kaydet ve listeyi güncelle
-  function saveAndRender() {
-    localStorage.setItem('todos', JSON.stringify(todos));
-    renderTodos();
-  }
+  // Filtre butonları event
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
+      currentFilter = button.dataset.filter;
+      renderTodos();
+    });
+  });
 
   // Yeni görev ekle
   todoForm.addEventListener('submit', e => {
     e.preventDefault();
-    const task = todoInput.value.trim();
-    if (task) {
-      todos.push({ text: task, completed: false });
-      todoInput.value = '';
-      saveAndRender();
-    }
+    const text = todoInput.value.trim();
+    const priority = prioritySelect.value;
+
+    if(text.length === 0) return;
+
+    todos.push({ text, completed: false, priority });
+    saveTodos();
+
+    todoInput.value = '';
+    prioritySelect.value = 'Orta';
+
+    renderTodos();
   });
 
-  // Sayfa yüklendiğinde listeyi göster
+  // İlk render
   renderTodos();
 </script>
 
