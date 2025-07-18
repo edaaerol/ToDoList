@@ -2,457 +2,177 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Profil ve To-Do List</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
   body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #6a82fb, #fc5c7d);
-    min-height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    color: #2e2e2e;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f0f0f0;
+    color: #222;
+    transition: background-color 0.3s, color 0.3s;
   }
-
   body.dark {
     background: #121212;
-    color: #ddd;
+    color: #eee;
   }
 
-  #app, #profile-container {
-    background: #fff;
-    width: 100%;
-    max-width: 480px;
-    border-radius: 16px;
-    box-shadow: 0 20px 35px rgba(0,0,0,0.15);
-    padding: 32px 30px 45px;
-    box-sizing: border-box;
+  #profile-container, #app {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  }
+  body.dark #profile-container, body.dark #app {
+    background: #222;
   }
 
-  body.dark #app, body.dark #profile-container {
-    background: #1e1e1e;
-    box-shadow: 0 20px 35px rgba(255,255,255,0.1);
-  }
-
+  #profile-container { display: none; }
   #app { display: none; }
 
-  #profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  h1 {
-    margin: 0 0 30px;
-    color: inherit;
-    font-weight: 700;
-    font-size: 28px;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-
-  input[type="text"] {
+  input[type="text"], select {
     width: 100%;
-    padding: 14px 18px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    font-size: 17px;
-    transition: border-color 0.3s ease;
+    font-size: 16px;
+    padding: 8px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
     box-sizing: border-box;
-    background: #fff;
-    color: #222;
   }
-  input[type="text"]:focus {
-    border-color: #6a82fb;
-    outline: none;
-    box-shadow: 0 0 8px rgba(106,130,251,0.4);
-  }
-  body.dark input[type="text"] {
-    background: #333;
+  body.dark input[type="text"], body.dark select {
+    background: #444;
     color: #eee;
-    border-color: #555;
-  }
-  body.dark input[type="text"]:focus {
-    border-color: #8a99f7;
-    box-shadow: 0 0 8px rgba(138,153,247,0.5);
+    border-color: #666;
   }
 
   button {
-    background: #6a82fb;
-    border: none;
+    background: #3b82f6;
     color: white;
-    padding: 14px 26px;
-    border-radius: 12px;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 0.7px;
-    box-shadow: 0 6px 12px rgba(106,130,251,0.35);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
   }
   button:hover {
-    background: #5578e3;
-    box-shadow: 0 8px 18px rgba(85,120,227,0.55);
-  }
-  button:focus {
-    outline: none;
-    box-shadow: 0 0 12px 3px rgba(106,130,251,0.6);
+    background: #2563eb;
   }
 
-  #change-profile-btn {
-    background: #fc5c7d;
+  #theme-toggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    width: auto;
     padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(252,92,125,0.4);
-  }
-  #change-profile-btn:hover {
-    background: #e84c6d;
-    box-shadow: 0 6px 14px rgba(232,76,109,0.6);
-  }
-
-  #user-name {
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: inherit;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
-
-  form {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 8px;
-  }
-  input#todo-input {
-    flex: 1;
-    padding: 14px 18px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    transition: border-color 0.3s ease;
-  }
-  input#todo-input:focus {
-    border-color: #6a82fb;
-    outline: none;
-    box-shadow: 0 0 8px rgba(106,130,251,0.4);
-  }
-  body.dark input#todo-input {
-    background: #333;
-    color: #eee;
-    border-color: #555;
-  }
-  body.dark input#todo-input:focus {
-    border-color: #8a99f7;
-    box-shadow: 0 0 8px rgba(138,153,247,0.5);
-  }
-
-  select {
-    width: 140px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    font-size: 16px;
-    padding: 14px 10px;
-    background: white;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-  }
-  select:focus {
-    border-color: #6a82fb;
-    outline: none;
-    box-shadow: 0 0 8px rgba(106,130,251,0.4);
-  }
-  body.dark select {
-    background: #333;
-    color: #eee;
-    border-color: #555;
-  }
-  body.dark select:focus {
-    border-color: #8a99f7;
-    box-shadow: 0 0 8px rgba(138,153,247,0.5);
-  }
-
-  #filters {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin-bottom: 30px;
-  }
-  #filters button {
-    background: #f0f0f0;
-    color: #666;
     border-radius: 12px;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    z-index: 999;
   }
-  #filters button.active,
-  #filters button:hover {
-    background: #6a82fb;
-    color: white;
-    box-shadow: 0 6px 12px rgba(106,130,251,0.35);
+
+  #user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  #user-info span.avatar {
+    font-size: 36px;
   }
 
   ul {
     list-style: none;
     padding: 0;
-    margin: 0;
   }
+
   li {
-    background: #fafafa;
-    border-radius: 14px;
-    padding: 16px 22px;
-    margin-bottom: 14px;
+    background: #e2e8f0;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.07);
-    transition: background-color 0.3s ease, transform 0.15s ease;
-    cursor: default;
-    border-left: 8px solid transparent;
-    color: #222;
-  }
-  li:hover {
-    background-color: #f0f4ff;
-    transform: translateY(-3px);
-  }
-  li.completed {
-    background-color: #dff7e6;
-    text-decoration: line-through;
-    color: #5a8a5a;
   }
   body.dark li {
-    background: #2a2a2a;
-    color: #ddd;
+    background: #333;
   }
-  body.dark li:hover {
-    background-color: #333;
-  }
-  body.dark li.completed {
-    background-color: #336633;
-    color: #cdeccd;
-  }
-
-  li[data-priority="Düşük"] { border-left-color: #94a3b8; }
-  li[data-priority="Orta"] { border-left-color: #facc15; }
-  li[data-priority="Yüksek"] { border-left-color: #ef4444; }
-
-  .left {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .left input[type="checkbox"] {
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    border-radius: 4px;
-    border: 2px solid #6a82fb;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-  }
-  .left input[type="checkbox"]:checked {
-    background-color: #6a82fb;
-    border-color: #4f63cc;
-  }
-
-  .task-text {
-    font-size: 17px;
-    user-select: none;
-    outline-offset: 3px;
-    min-width: 50px;
-    max-width: 100%;
-    word-break: break-word;
-    transition: color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .task-text[contenteditable="true"] {
-    border-bottom: 2px dashed #6a82fb;
-    outline: none;
-    cursor: text;
-    color: #222;
-  }
-  body.dark .task-text[contenteditable="true"] {
-    color: #ddd;
-  }
-
-  /* Öncelik etiketi */
-  .priority-label {
-    margin-bottom: 6px;
-    font-weight: 700;
-    font-size: 14px;
-    color: inherit;
-    text-align: left;
+  li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
   }
 
   .priority-tag {
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 13px;
+    padding: 3px 8px;
+    border-radius: 12px;
     color: white;
+    font-weight: bold;
+    font-size: 13px;
     user-select: none;
     white-space: nowrap;
-    display: inline-block;
-    margin-top: 4px;
   }
-  .priority-tag.dusuk {
-    background-color: #94a3b8;
+  .priority-low {
+    background: #64748b;
   }
-  .priority-tag.orta {
-    background-color: #facc15;
-    color: #3a3a3a;
-  }
-  .priority-tag.yuksek {
-    background-color: #ef4444;
-  }
-
-  .right {
-    display: flex;
-    gap: 14px;
-  }
-  .btn {
-    background: #6a82fb;
-    border: none;
-    color: white;
-    padding: 8px 18px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    box-shadow: 0 4px 10px rgba(106,130,251,0.3);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-  }
-  .btn.delete {
-    background: #fc5c7d;
-    box-shadow: 0 4px 10px rgba(252,92,125,0.35);
-  }
-  .btn.delete:hover {
-    background: #e63c63;
-    box-shadow: 0 6px 14px rgba(230,60,99,0.55);
-  }
-  .btn:hover:not(.delete) {
-    background: #5578e3;
-    box-shadow: 0 6px 14px rgba(85,120,227,0.45);
-  }
-
-  /* Emoji avatar seçimi */
-  #avatar-select {
-    width: 100%;
-    font-size: 24px;
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    margin-top: 8px;
-    cursor: pointer;
-    background: white;
-    transition: border-color 0.3s ease;
-  }
-  #avatar-select:focus {
-    border-color: #6a82fb;
-    outline: none;
-    box-shadow: 0 0 8px rgba(106,130,251,0.4);
-  }
-  body.dark #avatar-select {
-    background: #333;
-    color: #eee;
-    border-color: #555;
-  }
-  body.dark #avatar-select:focus {
-    border-color: #8a99f7;
-    box-shadow: 0 0 8px rgba(138,153,247,0.5);
-  }
-
-  /* Tema değiştirme butonu */
-  #theme-toggle {
-    position: fixed;
-    top: 12px;
-    right: 12px;
-    background: #6a82fb;
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    font-weight: 700;
-    font-size: 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 6px 12px rgba(106,130,251,0.35);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-    z-index: 999;
-  }
-  #theme-toggle:hover {
-    background: #5578e3;
-    box-shadow: 0 8px 18px rgba(85,120,227,0.55);
-  }
-  #theme-toggle:focus {
-    outline: none;
-    box-shadow: 0 0 12px 3px rgba(106,130,251,0.6);
-  }
-
-  @media (max-width: 480px) {
-    #app, #profile-container {
-      padding: 25px 20px 35px;
-    }
-    form {
-      flex-direction: column;
-    }
-    select, input#todo-input, button {
-      width: 100%;
-    }
-    ul {
-      margin-top: 20px;
-    }
-  }
-
-  /* Öncelik alt yazıları */
-  #priority-legend {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 30px;
-    font-weight: 600;
-    font-size: 14px;
-    color: inherit;
-  }
-  #priority-legend span {
-    padding: 4px 12px;
-    border-radius: 14px;
-    user-select: none;
-  }
-  #priority-legend .dusuk {
-    background-color: #94a3b8;
-    color: white;
-  }
-  #priority-legend .orta {
-    background-color: #facc15;
-    color: #3a3a3a;
-  }
-  #priority-legend .yuksek {
-    background-color: #ef4444;
-    color: white;
-  }
-  body.dark #priority-legend .orta {
+  .priority-medium {
+    background: #eab308;
     color: black;
+  }
+  .priority-high {
+    background: #dc2626;
+  }
+
+  /* Filters alt butonu kaldırıldı, üstteki toggle bırakıldı */
+  .filters {
+    display: none;
+  }
+
+  /* Responsive düzenleme */
+  @media (max-width: 450px) {
+    body {
+      margin: 10px 8px;
+    }
+    #profile-container, #app {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 15px 12px;
+    }
+    button {
+      font-size: 14px;
+      padding: 10px;
+    }
+    #user-info {
+      font-size: 18px;
+      gap: 8px;
+    }
+    #user-info span.avatar {
+      font-size: 30px;
+    }
+    li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 10px 12px;
+    }
+    li > label {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    li .priority-tag {
+      margin-top: 4px;
+    }
+    li button {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px 0;
+    }
   }
 </style>
 </head>
@@ -461,11 +181,11 @@
 <button id="theme-toggle" aria-label="Tema değiştir">Koyu Tema</button>
 
 <div id="profile-container" role="region" aria-label="Profil oluşturma">
-  <h1>Hoşgeldin!</h1>
-  <p>Lütfen profil ismini gir:</p>
-  <input type="text" id="profile-input" placeholder="İsminizi yazınız..." autocomplete="off" aria-required="true" />
+  <h2>Profil Oluştur</h2>
+  <label for="name-input">İsim:</label>
+  <input type="text" id="name-input" placeholder="İsminizi girin" />
   
-  <label for="avatar-select" style="font-weight:700; margin-top: 16px; display:block;">Avatar seçin:</label>
+  <label for="avatar-select">Avatar seçin:</label>
   <select id="avatar-select" aria-label="Avatar seçimi">
     <option value="😀">😀 Gülümseyen</option>
     <option value="😎">😎 Gözlüklü</option>
@@ -479,102 +199,98 @@
     <option value="👽">👽 Uzaylı</option>
   </select>
 
-  <button id="save-profile-btn" aria-label="Profil ismini kaydet">Kaydet</button>
+  <button id="save-profile-btn">Kaydet</button>
 </div>
 
 <div id="app" role="main" aria-label="Yapılacaklar Listesi Uygulaması">
-  <div id="user-name" aria-live="polite">
-    <span id="avatar-display" style="font-size: 30px; margin-right: 10px;"></span>
-    Merhaba, <span id="username-display"></span>
-    <button id="change-profile-btn" aria-label="Profili değiştir">Profili Değiştir</button>
+  <div id="user-info">
+    <span class="avatar" aria-label="Kullanıcı avatarı"></span>
+    <span id="user-name"></span>
+    <button id="change-profile-btn" style="margin-left:auto; background:#ef4444;">Profili Değiştir</button>
   </div>
 
-  <form id="todo-form" autocomplete="off" aria-label="Yeni görev ekleme formu">
-    <input type="text" id="todo-input" placeholder="Yeni görev ekle..." required aria-required="true" />
-    <div style="display:flex; flex-direction:column; margin-left:10px;">
-      <label class="priority-label" for="priority-select">Öncelik:</label>
-      <select id="priority-select" aria-label="Görev önceliği seçin">
-        <option value="Düşük">Düşük</option>
-        <option value="Orta" selected>Orta</option>
-        <option value="Yüksek">Yüksek</option>
-      </select>
-    </div>
-    <button type="submit" aria-label="Görev ekle">Ekle</button>
+  <form id="todo-form" aria-label="Yeni görev ekleme formu">
+    <input type="text" id="todo-input" placeholder="Yeni görev ekle" required />
+    <select id="priority-select" aria-label="Görev önceliği seçin">
+      <option value="low">Düşük</option>
+      <option value="medium" selected>Orta</option>
+      <option value="high">Yüksek</option>
+    </select>
+    <button type="submit">Ekle</button>
   </form>
 
-  <div id="priority-legend" aria-label="Görev öncelik seviyeleri açıklaması">
-    <span class="dusuk">Düşük</span>
-    <span class="orta">Orta</span>
-    <span class="yuksek">Yüksek</span>
-  </div>
+  <!-- Alt filtre butonları kaldırıldı -->
+  <div class="filters"></div>
 
-  <div id="filters" role="group" aria-label="Görev filtreleri">
-    <button class="filter-btn active" data-filter="all" aria-pressed="true">Tümü</button>
-    <button class="filter-btn" data-filter="active" aria-pressed="false">Aktif</button>
-    <button class="filter-btn" data-filter="completed" aria-pressed="false">Tamamlanan</button>
-  </div>
-
-  <ul id="todo-list" aria-live="polite" aria-relevant="additions removals" tabindex="0"></ul>
+  <ul id="todo-list" aria-live="polite"></ul>
 </div>
 
 <script>
   const profileContainer = document.getElementById('profile-container');
-  const profileInput = document.getElementById('profile-input');
-  const saveProfileBtn = document.getElementById('save-profile-btn');
+  const nameInput = document.getElementById('name-input');
   const avatarSelect = document.getElementById('avatar-select');
+  const saveProfileBtn = document.getElementById('save-profile-btn');
 
   const app = document.getElementById('app');
-  const usernameDisplay = document.getElementById('username-display');
-  const avatarDisplay = document.getElementById('avatar-display');
+  const avatarDisplay = document.querySelector('#user-info .avatar');
+  const userNameDisplay = document.getElementById('user-name');
   const changeProfileBtn = document.getElementById('change-profile-btn');
 
   const todoForm = document.getElementById('todo-form');
   const todoInput = document.getElementById('todo-input');
   const prioritySelect = document.getElementById('priority-select');
   const todoList = document.getElementById('todo-list');
-  const filterButtons = document.querySelectorAll('#filters .filter-btn');
 
   const themeToggleBtn = document.getElementById('theme-toggle');
 
-  let todos = JSON.parse(localStorage.getItem('todos')) || [];
+  let todos = JSON.parse(localStorage.getItem('todos') || '[]');
   let currentFilter = 'all';
 
-  // Yeni: Avatarı da storage'a ekle
-  function checkProfile() {
+  function showProfile() {
+    profileContainer.style.display = 'block';
+    app.style.display = 'none';
+  }
+  function showApp() {
+    profileContainer.style.display = 'none';
+    app.style.display = 'block';
+  }
+
+  function loadProfile() {
     const username = localStorage.getItem('username');
-    const avatar = localStorage.getItem('avatar') || '😀';
-    if(username && username.trim() !== '') {
-      profileContainer.style.display = 'none';
-      app.style.display = 'block';
-      usernameDisplay.textContent = username;
+    const avatar = localStorage.getItem('avatar');
+    if(username && avatar) {
+      userNameDisplay.textContent = username;
       avatarDisplay.textContent = avatar;
+      showApp();
     } else {
-      profileContainer.style.display = 'flex';
-      app.style.display = 'none';
+      showProfile();
     }
   }
 
   saveProfileBtn.addEventListener('click', () => {
-    const name = profileInput.value.trim();
+    const name = nameInput.value.trim();
+    const avatar = avatarSelect.value;
     if(name.length === 0) {
-      alert('Lütfen geçerli bir isim giriniz.');
-      profileInput.focus();
+      alert('Lütfen isim giriniz');
       return;
     }
     localStorage.setItem('username', name);
-    localStorage.setItem('avatar', avatarSelect.value);
-    profileInput.value = '';
-    checkProfile();
+    localStorage.setItem('avatar', avatar);
+    todos = [];
+    localStorage.removeItem('todos');
+    nameInput.value = '';
+    loadProfile();
+    renderTodos();
   });
 
   changeProfileBtn.addEventListener('click', () => {
-    if(confirm('Profilinizi değiştirmek istediğinize emin misiniz? Tüm görevler silinecek.')) {
+    if(confirm('Profili değiştirmek istediğinizden emin misiniz? Tüm görevler silinecek.')) {
       localStorage.removeItem('username');
       localStorage.removeItem('avatar');
       localStorage.removeItem('todos');
       todos = [];
+      loadProfile();
       renderTodos();
-      checkProfile();
     }
   });
 
@@ -585,76 +301,43 @@
   function renderTodos() {
     todoList.innerHTML = '';
 
-    const filteredTodos = todos.filter(todo => {
-      if (currentFilter === 'active') return !todo.completed;
-      if (currentFilter === 'completed') return todo.completed;
-      return true;
-    });
+    let filtered = todos;
+    if(currentFilter === 'active') {
+      filtered = todos.filter(t => !t.completed);
+    } else if(currentFilter === 'completed') {
+      filtered = todos.filter(t => t.completed);
+    }
 
-    if(filteredTodos.length === 0) {
-      todoList.innerHTML = '<li style="text-align:center; color:#888;">Görev bulunmamaktadır.</li>';
+    if(filtered.length === 0) {
+      todoList.innerHTML = '<li style="text-align:center; opacity:0.5;">Görev yok</li>';
       return;
     }
 
-    filteredTodos.forEach((todo, index) => {
+    filtered.forEach((todo, i) => {
       const li = document.createElement('li');
-      li.className = todo.completed ? 'completed' : '';
-      li.setAttribute('data-priority', todo.priority);
+      if(todo.completed) li.classList.add('completed');
 
-      // Öncelik etiketi için class belirle
-      let priorityClass = '';
-      if(todo.priority === 'Düşük') priorityClass = 'dusuk';
-      else if(todo.priority === 'Orta') priorityClass = 'orta';
-      else if(todo.priority === 'Yüksek') priorityClass = 'yuksek';
+      const priorityClass = todo.priority === 'low' ? 'priority-low' : (todo.priority === 'medium' ? 'priority-medium' : 'priority-high');
 
       li.innerHTML = `
-        <div class="left">
-          <input type="checkbox" ${todo.completed ? 'checked' : ''} aria-label="Görev tamamlandı mı?"/>
-          <span class="task-text" tabindex="0" contenteditable="false" aria-label="Görev: ${todo.text}">${todo.text}</span>
-          <span class="priority-tag ${priorityClass}" aria-label="Öncelik seviyesi: ${todo.priority}">${todo.priority}</span>
-        </div>
-        <div class="right">
-          <button class="btn edit" aria-label="Görevi düzenle">Düzenle</button>
-          <button class="btn delete" aria-label="Görevi sil">Sil</button>
-        </div>
+        <label style="flex:1; display:flex; align-items:center; gap:10px; cursor:pointer;">
+          <input type="checkbox" ${todo.completed ? 'checked' : ''} style="transform:scale(1.3);" aria-label="Görev tamamlandı mı?"/>
+          <span>${todo.text}</span>
+        </label>
+        <span class="priority-tag ${priorityClass}" aria-label="Öncelik seviyesi: ${todo.priority === 'low' ? 'Düşük' : todo.priority === 'medium' ? 'Orta' : 'Yüksek'}">${todo.priority === 'low' ? 'Düşük' : todo.priority === 'medium' ? 'Orta' : 'Yüksek'}</span>
+        <button style="margin-left:10px; background:#ef4444; color:white; border:none; border-radius:8px; cursor:pointer;" aria-label="Görevi sil">Sil</button>
       `;
 
+      // Checkbox toggle
       li.querySelector('input[type="checkbox"]').addEventListener('change', () => {
-        todos[index].completed = !todos[index].completed;
+        todos[i].completed = !todos[i].completed;
         saveTodos();
         renderTodos();
       });
-
-      const taskTextSpan = li.querySelector('.task-text');
-      const editBtn = li.querySelector('.edit');
-
-      editBtn.addEventListener('click', () => {
-        taskTextSpan.contentEditable = "true";
-        taskTextSpan.focus();
-        document.execCommand('selectAll', false, null);
-      });
-
-      function finishEditing(e) {
-        if (e.type === 'keydown' && e.key !== 'Enter') return;
-        e.preventDefault();
-        const newText = taskTextSpan.textContent.trim();
-        if (newText.length === 0) {
-          alert('Görev boş olamaz!');
-          taskTextSpan.textContent = todos[index].text;
-        } else {
-          todos[index].text = newText;
-          saveTodos();
-        }
-        taskTextSpan.contentEditable = "false";
-        renderTodos();
-      }
-
-      taskTextSpan.addEventListener('keydown', finishEditing);
-      taskTextSpan.addEventListener('blur', finishEditing);
-
-      li.querySelector('.delete').addEventListener('click', () => {
-        if(confirm('Bu görevi silmek istediğinize emin misiniz?')) {
-          todos.splice(index, 1);
+      // Delete button
+      li.querySelector('button').addEventListener('click', () => {
+        if(confirm('Görevi silmek istediğinize emin misiniz?')) {
+          todos.splice(i,1);
           saveTodos();
           renderTodos();
         }
@@ -664,36 +347,19 @@
     });
   }
 
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      filterButtons.forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-pressed', 'false');
-      });
-      button.classList.add('active');
-      button.setAttribute('aria-pressed', 'true');
-      currentFilter = button.dataset.filter;
-      renderTodos();
-    });
-  });
-
   todoForm.addEventListener('submit', e => {
     e.preventDefault();
     const text = todoInput.value.trim();
     const priority = prioritySelect.value;
-
-    if(text.length === 0) return;
-
+    if(text === '') return;
     todos.push({ text, completed: false, priority });
     saveTodos();
-
     todoInput.value = '';
-    prioritySelect.value = 'Orta';
-
+    prioritySelect.value = 'medium';
     renderTodos();
   });
 
-  // Koyu tema toggle
+  // Tema toggle
   function applyTheme(theme) {
     if(theme === 'dark') {
       document.body.classList.add('dark');
@@ -704,16 +370,15 @@
     }
     localStorage.setItem('theme', theme);
   }
+
   themeToggleBtn.addEventListener('click', () => {
     const current = document.body.classList.contains('dark') ? 'dark' : 'light';
     applyTheme(current === 'dark' ? 'light' : 'dark');
   });
 
-  // Sayfa açılırken profili ve temayı kontrol et
   window.addEventListener('load', () => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    applyTheme(savedTheme);
-    checkProfile();
+    applyTheme(localStorage.getItem('theme') || 'light');
+    loadProfile();
     renderTodos();
   });
 </script>
