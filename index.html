@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Profil ve To-Do List</title>
+<title>Profil ve To-Do List (Emoji Avatar)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -62,6 +62,30 @@
     box-shadow: 0 0 8px rgba(106,130,251,0.4);
   }
 
+  .emoji-list {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .emoji-item {
+    font-size: 32px;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 12px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    border: 2px solid transparent;
+  }
+  .emoji-item.selected {
+    border-color: #6a82fb;
+    background-color: #d0dbff;
+    transform: scale(1.2);
+  }
+  .emoji-item:hover {
+    background-color: #f0f4ff;
+  }
+
   button {
     background: #6a82fb;
     border: none;
@@ -103,8 +127,13 @@
     margin-bottom: 25px;
     color: #444;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 12px;
+  }
+
+  #user-avatar {
+    font-size: 30px;
   }
 
   form {
@@ -308,14 +337,29 @@
 
 <div id="profile-container" role="region" aria-label="Profil oluşturma">
   <h1>Hoşgeldin!</h1>
-  <p>Lütfen profil ismini gir:</p>
-  <input type="text" id="profile-input" placeholder="İsminizi yazınız..." autocomplete="off" aria-required="true" />
-  <button id="save-profile-btn" aria-label="Profil ismini kaydet">Kaydet</button>
+  <p>Lütfen kullanıcı adınızı yazın ve avatar seçin:</p>
+  <input type="text" id="profile-input" placeholder="Kullanıcı adınızı yazınız..." autocomplete="off" aria-required="true" />
+
+  <div class="emoji-list" role="list" aria-label="Emoji avatar seçimi">
+    <button type="button" class="emoji-item" aria-label="Gülümseyen yüz emoji" data-emoji="😀">😀</button>
+    <button type="button" class="emoji-item" aria-label="Kedi yüzü emoji" data-emoji="🐱">🐱</button>
+    <button type="button" class="emoji-item" aria-label="Kalp göz emoji" data-emoji="😍">😍</button>
+    <button type="button" class="emoji-item" aria-label="Gözlük emoji" data-emoji="😎">😎</button>
+    <button type="button" class="emoji-item" aria-label="Kahkaha emoji" data-emoji="😂">😂</button>
+    <button type="button" class="emoji-item" aria-label="Düşünen yüz emoji" data-emoji="🤔">🤔</button>
+    <button type="button" class="emoji-item" aria-label="Ateş emoji" data-emoji="🔥">🔥</button>
+    <button type="button" class="emoji-item" aria-label="Yıldız emoji" data-emoji="⭐">⭐</button>
+    <button type="button" class="emoji-item" aria-label="Robot emoji" data-emoji="🤖">🤖</button>
+    <button type="button" class="emoji-item" aria-label="Balon emoji" data-emoji="🎈">🎈</button>
+  </div>
+
+  <button id="save-profile-btn" aria-label="Profil kaydet">Kaydet</button>
 </div>
 
 <div id="app" role="main" aria-label="Yapılacaklar Listesi Uygulaması">
   <div id="user-name">
-    Merhaba, <span id="username-display" aria-live="polite"></span>
+    <span id="user-avatar" aria-hidden="true"></span>
+    <span id="username-display" aria-live="polite"></span>
     <button id="change-profile-btn" aria-label="Profili değiştir">Profili Değiştir</button>
   </div>
 
@@ -342,8 +386,11 @@
   const profileContainer = document.getElementById('profile-container');
   const profileInput = document.getElementById('profile-input');
   const saveProfileBtn = document.getElementById('save-profile-btn');
+  const emojiItems = document.querySelectorAll('.emoji-item');
+
   const app = document.getElementById('app');
   const usernameDisplay = document.getElementById('username-display');
+  const userAvatar = document.getElementById('user-avatar');
   const changeProfileBtn = document.getElementById('change-profile-btn');
 
   const todoForm = document.getElementById('todo-form');
@@ -354,13 +401,25 @@
 
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
   let currentFilter = 'all';
+  let selectedEmoji = null;
+
+  // Emoji seçim yönetimi
+  emojiItems.forEach(btn => {
+    btn.addEventListener('click', () => {
+      emojiItems.forEach(e => e.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedEmoji = btn.dataset.emoji;
+    });
+  });
 
   function checkProfile() {
     const username = localStorage.getItem('username');
-    if(username && username.trim() !== '') {
+    const avatar = localStorage.getItem('avatar');
+    if(username && username.trim() !== '' && avatar) {
       profileContainer.style.display = 'none';
       app.style.display = 'block';
       usernameDisplay.textContent = username;
+      userAvatar.textContent = avatar;
     } else {
       profileContainer.style.display = 'flex';
       app.style.display = 'none';
@@ -370,18 +429,26 @@
   saveProfileBtn.addEventListener('click', () => {
     const name = profileInput.value.trim();
     if(name.length === 0) {
-      alert('Lütfen geçerli bir isim giriniz.');
+      alert('Lütfen geçerli bir kullanıcı adı giriniz.');
       profileInput.focus();
       return;
     }
+    if(!selectedEmoji) {
+      alert('Lütfen bir avatar seçiniz.');
+      return;
+    }
     localStorage.setItem('username', name);
+    localStorage.setItem('avatar', selectedEmoji);
     profileInput.value = '';
+    selectedEmoji = null;
+    emojiItems.forEach(e => e.classList.remove('selected'));
     checkProfile();
   });
 
   changeProfileBtn.addEventListener('click', () => {
     if(confirm('Profilinizi değiştirmek istediğinize emin misiniz? Tüm görevler silinecek.')) {
       localStorage.removeItem('username');
+      localStorage.removeItem('avatar');
       localStorage.removeItem('todos');
       todos = [];
       renderTodos();
@@ -412,25 +479,13 @@
       li.className = todo.completed ? 'completed' : '';
       li.setAttribute('data-priority', todo.priority);
 
-      // Öncelik etiket metni ve class
-      let priorityLabel = '';
-      let priorityClass = '';
-
-      if(todo.priority === 'Düşük') {
-        priorityLabel = 'Düşük Öncelik';
-        priorityClass = 'dusuk';
-      } else if(todo.priority === 'Orta') {
-        priorityLabel = 'Orta Öncelik';
-        priorityClass = 'orta';
-      } else if(todo.priority === 'Yüksek') {
-        priorityLabel = 'Yüksek Öncelik';
-        priorityClass = 'yuksek';
-      }
+      const priorityClass = todo.priority.toLowerCase();
+      const priorityLabel = todo.priority + ' Öncelik';
 
       li.innerHTML = `
         <div class="left">
           <input type="checkbox" ${todo.completed ? 'checked' : ''} aria-label="Görev tamamlandı mı?"/>
-          <span class="task-text" tabindex="0" contenteditable="false" aria-label="Görev: ${todo.text}">${todo.text}</span>
+          <span class="task-text" tabindex="0">${todo.text}</span>
           <span class="priority-tag ${priorityClass}" aria-label="Öncelik seviyesi: ${priorityLabel}">${priorityLabel}</span>
         </div>
         <div class="right">
@@ -518,7 +573,7 @@
     });
   });
 
-  // Sayfa açıldığında
+  // Sayfa açıldığında profil kontrolü ve todo renderı
   checkProfile();
   renderTodos();
 
