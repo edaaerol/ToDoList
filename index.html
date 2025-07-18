@@ -412,17 +412,26 @@
       li.className = todo.completed ? 'completed' : '';
       li.setAttribute('data-priority', todo.priority);
 
-      // Öncelik etiketi için class belirle
+      // Öncelik etiket metni ve class
+      let priorityLabel = '';
       let priorityClass = '';
-      if(todo.priority === 'Düşük') priorityClass = 'dusuk';
-      else if(todo.priority === 'Orta') priorityClass = 'orta';
-      else if(todo.priority === 'Yüksek') priorityClass = 'yuksek';
+
+      if(todo.priority === 'Düşük') {
+        priorityLabel = 'Düşük Öncelik';
+        priorityClass = 'dusuk';
+      } else if(todo.priority === 'Orta') {
+        priorityLabel = 'Orta Öncelik';
+        priorityClass = 'orta';
+      } else if(todo.priority === 'Yüksek') {
+        priorityLabel = 'Yüksek Öncelik';
+        priorityClass = 'yuksek';
+      }
 
       li.innerHTML = `
         <div class="left">
           <input type="checkbox" ${todo.completed ? 'checked' : ''} aria-label="Görev tamamlandı mı?"/>
           <span class="task-text" tabindex="0" contenteditable="false" aria-label="Görev: ${todo.text}">${todo.text}</span>
-          <span class="priority-tag ${priorityClass}" aria-label="Öncelik seviyesi: ${todo.priority}">${todo.priority}</span>
+          <span class="priority-tag ${priorityClass}" aria-label="Öncelik seviyesi: ${priorityLabel}">${priorityLabel}</span>
         </div>
         <div class="right">
           <button class="btn edit" aria-label="Görevi düzenle">Düzenle</button>
@@ -430,42 +439,44 @@
         </div>
       `;
 
-      li.querySelector('input[type="checkbox"]').addEventListener('change', () => {
-        todos[index].completed = !todos[index].completed;
+      // Checkbox toggle
+      const checkbox = li.querySelector('input[type="checkbox"]');
+      checkbox.addEventListener('change', () => {
+        todos[index].completed = checkbox.checked;
         saveTodos();
         renderTodos();
       });
 
-      const taskTextSpan = li.querySelector('.task-text');
-      const editBtn = li.querySelector('.edit');
-
-      editBtn.addEventListener('click', () => {
-        taskTextSpan.contentEditable = "true";
-        taskTextSpan.focus();
-        document.execCommand('selectAll', false, null);
+      // Delete button
+      const deleteBtn = li.querySelector('.btn.delete');
+      deleteBtn.addEventListener('click', () => {
+        if(confirm('Bu görevi silmek istediğinize emin misiniz?')) {
+          todos.splice(index,1);
+          saveTodos();
+          renderTodos();
+        }
       });
 
-      function finishEditing(e) {
-        if (e.type === 'keydown' && e.key !== 'Enter') return;
-        e.preventDefault();
-        const newText = taskTextSpan.textContent.trim();
-        if (newText.length === 0) {
-          alert('Görev boş olamaz!');
-          taskTextSpan.textContent = todos[index].text;
+      // Edit button
+      const editBtn = li.querySelector('.btn.edit');
+      const taskText = li.querySelector('.task-text');
+      editBtn.addEventListener('click', () => {
+        if(editBtn.textContent === 'Düzenle') {
+          taskText.contentEditable = 'true';
+          taskText.focus();
+          editBtn.textContent = 'Kaydet';
+          taskText.style.borderBottom = '2px dashed #6a82fb';
         } else {
+          const newText = taskText.textContent.trim();
+          if(newText.length === 0) {
+            alert('Görev boş olamaz!');
+            taskText.focus();
+            return;
+          }
           todos[index].text = newText;
-          saveTodos();
-        }
-        taskTextSpan.contentEditable = "false";
-        renderTodos();
-      }
-
-      taskTextSpan.addEventListener('keydown', finishEditing);
-      taskTextSpan.addEventListener('blur', finishEditing);
-
-      li.querySelector('.delete').addEventListener('click', () => {
-        if(confirm('Bu görevi silmek istediğinize emin misiniz?')) {
-          todos.splice(index, 1);
+          taskText.contentEditable = 'false';
+          editBtn.textContent = 'Düzenle';
+          taskText.style.borderBottom = 'none';
           saveTodos();
           renderTodos();
         }
@@ -475,37 +486,42 @@
     });
   }
 
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      filterButtons.forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-pressed', 'false');
-      });
-      button.classList.add('active');
-      button.setAttribute('aria-pressed', 'true');
-      currentFilter = button.dataset.filter;
-      renderTodos();
-    });
-  });
-
   todoForm.addEventListener('submit', e => {
     e.preventDefault();
     const text = todoInput.value.trim();
     const priority = prioritySelect.value;
 
-    if(text.length === 0) return;
+    if(text.length === 0) {
+      alert('Lütfen görev giriniz!');
+      todoInput.focus();
+      return;
+    }
 
-    todos.push({ text, completed: false, priority });
+    todos.push({text, completed: false, priority});
     saveTodos();
+    renderTodos();
 
     todoInput.value = '';
     prioritySelect.value = 'Orta';
-
-    renderTodos();
   });
 
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      currentFilter = btn.dataset.filter;
+      renderTodos();
+    });
+  });
+
+  // Sayfa açıldığında
   checkProfile();
   renderTodos();
+
 </script>
 
 </body>
