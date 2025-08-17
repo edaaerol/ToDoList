@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>To Do List</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My ToDo List</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
-    <h1 class="text-2xl font-bold text-center mb-4">To Do List</h1>
+<body>
+  <div class="container">
+    <h1>📌 My ToDo List</h1>
 
-    <div class="flex mb-4">
-      <input id="taskInput" type="text" placeholder="Add a new task..." 
-        class="flex-1 border rounded-l-xl px-3 py-2 focus:outline-none" />
-      <button onclick="addTask()" class="bg-blue-500 text-white px-4 py-2 rounded-r-xl hover:bg-blue-600">Add</button>
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="New task...">
+      <select id="category">
+        <option value="Home">Home</option>
+        <option value="Work">Work</option>
+        <option value="Study">Study</option>
+        <option value="Shopping">Shopping</option>
+      </select>
+      <button id="addTaskBtn">Add</button>
     </div>
 
-    <ul id="taskList" class="space-y-2"></ul>
+    <ul id="taskList"></ul>
   </div>
 
   <script src="script.js"></script>
