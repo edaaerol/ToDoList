@@ -1,29 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My ToDo List</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini To-Do Uygulaması</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; margin:0; }
+  #girisEkrani, #anaEkran { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 0 15px rgba(0,0,0,0.2); text-align: center; width: 300px; }
+  #anaEkran { display: none; }
+  input, select, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; width: 80%; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 10px; background: #e0e0e0; margin: 5px 0; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+  li.completed { text-decoration: line-through; color: gray; }
+  .btn { cursor: pointer; padding: 5px 10px; border: none; border-radius: 5px; margin-left: 5px; }
+  .btn-complete { background: #4caf50; color: white; }
+  .btn-delete { background: #f44336; color: white; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>📌 My ToDo List</h1>
 
-    <div class="input-group">
-      <input type="text" id="taskInput" placeholder="New task...">
-      <select id="category">
-        <option value="Home">Home</option>
-        <option value="Work">Work</option>
-        <option value="Study">Study</option>
-        <option value="Shopping">Shopping</option>
-      </select>
-      <button id="addTaskBtn">Add</button>
-    </div>
+<div id="girisEkrani">
+  <h2>Hoşgeldiniz!</h2>
+  <input type="text" id="kullaniciAdi" placeholder="Adınızı girin">
+  <select id="avatarSecim">
+    <option value="😀">😀</option>
+    <option value="😎">😎</option>
+    <option value="🧑‍💻">🧑‍💻</option>
+    <option value="👩‍🎨">👩‍🎨</option>
+  </select>
+  <br>
+  <button onclick="girisYap()">Başla</button>
+</div>
 
-    <ul id="taskList"></ul>
-  </div>
+<div id="anaEkran">
+  <h2 id="hosgeldinMesaji"></h2>
+  <input type="text" id="gorevInput" placeholder="Yeni görev">
+  <button onclick="gorevEkle()">Ekle</button>
+  <ul id="gorevListesi"></ul>
+</div>
 
-  <script src="script.js"></script>
+<script>
+let kullaniciAdi = '';
+let avatar = '';
+let gorevler = [];
+
+function girisYap() {
+  kullaniciAdi = document.getElementById('kullaniciAdi').value;
+  avatar = document.getElementById('avatarSecim').value;
+
+  if(kullaniciAdi.trim() === '') {
+    alert('Lütfen bir isim girin!');
+    return;
+  }
+
+  document.getElementById('girisEkrani').style.display = 'none';
+  document.getElementById('anaEkran').style.display = 'block';
+  document.getElementById('hosgeldinMesaji').innerText = `Hoşgeldin ${avatar} ${kullaniciAdi}!`;
+
+  // localStorage'dan görevleri yükle
+  let kayit = localStorage.getItem('gorevler_' + kullaniciAdi);
+  if(kayit) {
+    gorevler = JSON.parse(kayit);
+    gorevler.forEach(g => listeyeEkle(g.text, g.completed));
+  }
+}
+
+function gorevEkle() {
+  let gorevInput = document.getElementById('gorevInput');
+  let gorev = gorevInput.value.trim();
+  if(gorev === '') return;
+
+  gorevler.push({ text: gorev, completed: false });
+  localStorage.setItem('gorevler_' + kullaniciAdi, JSON.stringify(gorevler));
+
+  listeyeEkle(gorev, false);
+  gorevInput.value = '';
+}
+
+function listeyeEkle(text, completed) {
+  let li = document.createElement('li');
+  li.innerText = text;
+  if(completed) li.classList.add('completed');
+
+  let completeBtn = document.createElement('button');
+  completeBtn.innerText = '✔';
+  completeBtn.className = 'btn btn-complete';
+  completeBtn.onclick = () => {
+    li.classList.toggle('completed');
+    updateLocalStorage();
+  }
+
+  let deleteBtn = document.createElement('button');
+  deleteBtn.innerText = '✖';
+  deleteBtn.className = 'btn btn-delete';
+  deleteBtn.onclick = () => {
+    li.remove();
+    updateLocalStorage();
+  }
+
+  li.appendChild(completeBtn);
+  li.appendChild(deleteBtn);
+
+  document.getElementById('gorevListesi').appendChild(li);
+}
+
+function updateLocalStorage() {
+  let ul = document.getElementById('gorevListesi');
+  let items = ul.getElementsByTagName('li');
+  gorevler = [];
+  for(let li of items) {
+    let text = li.firstChild.textContent;
+    let completed = li.classList.contains('completed');
+    gorevler.push({ text, completed });
+  }
+  localStorage.setItem('gorevler_' + kullaniciAdi, JSON.stringify(gorevler));
+}
+</script>
+
 </body>
 </html>
